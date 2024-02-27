@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CoreState } from '../../store/core.state';
-import { AuthState, DecodedAccessToken, StoredAuthState } from '../../auth/model/auth.model';
+import { AuthState, StoredAuthState } from '../../auth/model/auth.model';
 import { initialAuthState } from '../../auth/store/auth.reducer';
 import { CoreRouterState } from '../../routing/store/core-router.state';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { initialSettingsState } from '../../settings/store/settings.reducer';
 import { logger } from '@app_core/util/logger.util';
 import { UserSessionService } from '@app_core/auth/services/user-session.service';
 
-const APP_PREFIX = 'PMF-';
+const APP_PREFIX = 'UCS-';
 const AUTH_KEY = 'AUTH';
 const ROUTER_KEY = 'ROUTER';
 const USER_SETTINGS_KEY = 'USER_SETTINGS';
@@ -45,7 +45,7 @@ export class LocalStorageService {
 
   public getRedirectUrl(): string{
     const item = LocalStorageService.getItem(ROUTER_KEY) as CoreRouterState;
-    return item?.url || '/dash';
+    return item?.url || '/home';
   }
 
   public setUserSettingsState(state: CoreSettingsState): void {

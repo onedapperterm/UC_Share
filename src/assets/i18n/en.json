@@ -1,0 +1,17 @@
+{
+  "components": {
+    "loginForm": {
+      "mainTitle": "Welcome back!",
+      "mainLabel": "Login with your credentials:",
+      "emailLabel": "Your e-mail",
+      "passwordLabel": "Your password",
+      "emailRequiredError": "Your e-mail is required",
+      "invalidEmailError": "Invalid e-mail format, please check it!",
+      "passwordRequiredError": "Your password is required",
+      "shortPasswordError": "Too short, check your password",
+      "loginButton": "Let´s go!",
+      "registerButton": "Register",
+      "registerHint": "Are you new? Want to join? Click on Register and request a new account for yourself."
+    }
+  }
+}

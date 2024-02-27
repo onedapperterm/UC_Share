@@ -1,0 +1,28 @@
+.general-form-container {
+  padding: 16px;
+}
+
+.one-row-form {
+  width: clamp(250px, 100%, 350px);
+  display: flex;
+  flex-direction: column;
+  gap: 2ch;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 2ch;
+    margin-top: 2ch;
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 450) {
+  .one-row-form {
+    width: clamp(220px, 100%, 270px);
+  }
+}
+

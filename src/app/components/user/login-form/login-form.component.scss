@@ -1,0 +1,8 @@
+@import '../../../../styles/global/components/forms/general-form-component.scss';
+
+:host {
+  @extend .general-form-container;
+  @extend .one-row-form;
+}
+
+

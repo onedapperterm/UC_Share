@@ -1,0 +1,37 @@
+<h1>{{ 'components.loginForm.mainTitle' | translate }}</h1>
+<span>{{ 'components.loginForm.mainLabel' | translate }}</span>
+<form [formGroup]="loginForm" novalidate>
+
+  <ion-input [label]="'components.loginForm.emailLabel' | translate"
+    label-placement="stacked"
+    fill="outline"
+    placeholder="email@email.com"
+    formControlName="emailAddress"
+    [errorText]="loginForm.controls.emailAddress.hasError('required') && loginForm.controls.emailAddress.touched ? ('components.loginForm.emailRequiredError' | translate) :
+    loginForm.controls.emailAddress.hasError('email') && loginForm.controls.emailAddress.touched ? ('components.loginForm.invalidEmailError' | translate) :
+    ''"
+  >
+    <ion-icon slot="start" name="mail-outline"></ion-icon>
+  </ion-input>
+
+  <ion-input [label]="'components.loginForm.passwordLabel' | translate"
+    label-placement="stacked"
+    fill="outline"
+    placeholder="password"
+    formControlName="password"
+    type="password"
+    [errorText]="loginForm.controls.password.hasError('required') && loginForm.controls.password.touched ? ('components.loginForm.passwordRequiredError' | translate) :
+    loginForm.controls.password.hasError('minlength') && loginForm.controls.password.touched ? ('components.loginForm.shortPasswordError' | translate) :
+    ''"
+  >
+    <ion-icon slot="start" name="lock-closed-outline" aria-hidden="true"></ion-icon>
+  </ion-input>
+
+  <ion-button expand="full" color="primary" [disabled]="loginForm.invalid" (click)="onSubmit()">
+    {{ 'components.loginForm.loginButton' | translate }}
+  </ion-button>
+</form>
+<ion-button expand="full" color="secondary" class="full-width">
+  {{ 'components.loginForm.registerButton' | translate }}
+</ion-button>
+<ion-note>{{ 'components.loginForm.registerHint' | translate }}</ion-note>

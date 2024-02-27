@@ -10,7 +10,8 @@
     "@app_components/*": ["./src/app/components/*"],
     "@app_services/*": ["./src/app/services/*"],
     "@app_pages/*": ["./src/app/pages/*"],
-    "@app_theme/*": ["./src/theme/*"]
+    "@app_theme/*": ["./src/theme/*"],
+    "@app_styles/*": ["./src/styles/*"]
   },
   "files": [
     "src/main.ts",
