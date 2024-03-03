@@ -1,17 +1,40 @@
 {
+  "common": {
+    "errors": {
+      "required": "This field is required",
+      "invalidEmail": "Invalid e-mail format, please check it!",
+      "invalidPhoneNumber": "Invalid phone number format, please check it!",
+      "shortPassword": "Too short, check your password",
+      "passwordsNotMatch": "Passwords do not match"
+    }
+  },
   "components": {
     "loginForm": {
       "mainTitle": "Welcome back!",
       "mainLabel": "Login with your credentials:",
       "emailLabel": "Your e-mail",
       "passwordLabel": "Your password",
-      "emailRequiredError": "Your e-mail is required",
-      "invalidEmailError": "Invalid e-mail format, please check it!",
-      "passwordRequiredError": "Your password is required",
-      "shortPasswordError": "Too short, check your password",
       "loginButton": "Let´s go!",
       "registerButton": "Register",
       "registerHint": "Are you new? Want to join? Click on Register and request a new account for yourself."
+    },
+    "registerForm": {
+      "firstNameLabel": "First Name",
+      "lastNameLabel": "Last Name",
+      "emailLabel": "Email Address",
+      "phoneNumberLabel": "Phone Number",
+      "careerLabel": "Career",
+      "passwordLabel": "Password",
+      "confirmPasswordLabel": "Confirm Password",
+      "submitButton": "Submit",
+      "toLoginButton": "Back to Login",
+      "firstNamePlaceholder": "Enter your first name",
+      "lastNamePlaceholder": "Enter your last name",
+      "emailPlaceholder": "Enter your email address",
+      "phoneNumberPlaceholder": "Enter your phone number",
+      "careerPlaceholder": "Enter your career",
+      "passwordPlaceholder": "Enter your password",
+      "confirmPasswordPlaceholder": "Confirm your password"
     }
   }
 }

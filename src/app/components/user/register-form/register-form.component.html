@@ -1,0 +1,118 @@
+<!-- Registration Form -->
+<form [formGroup]="registerForm" novalidate>
+
+  <!-- First Name Input -->
+  <ion-input [label]="'components.registerForm.firstNameLabel' | translate"
+             label-placement="stacked"
+             fill="outline"
+             formControlName="firstName"
+             [placeholder]="'components.registerForm.firstNamePlaceholder' | translate"
+             [errorText]="registerForm.controls.firstName.hasError('required') &&
+             registerForm.controls.firstName.touched ?
+             ('common.errors.required' | translate ) : ''"
+  >
+  </ion-input>
+
+  <!-- Last Name Input -->
+  <ion-input [label]="'components.registerForm.lastNameLabel' | translate"
+             label-placement="stacked"
+             fill="outline"
+             [placeholder]="'components.registerForm.lastNamePlaceholder' | translate"
+             formControlName="lastName"
+             [errorText]="registerForm.controls.lastName.hasError('required') &&
+             registerForm.controls.lastName.touched ?
+             ('common.errors.required' | translate ) : ''"
+  >
+  </ion-input>
+
+  <!-- Email Address Input -->
+  <ion-input [label]="'components.registerForm.emailLabel' | translate"
+             label-placement="stacked"
+             fill="outline"
+             [placeholder]="'components.registerForm.emailPlaceholder' | translate"
+             formControlName="emailAddress">
+  </ion-input>
+  <ion-note *ngIf="(registerForm.controls.emailAddress.dirty || registerForm.controls.emailAddress.touched)  && registerForm.controls.emailAddress.invalid" color="danger">
+    <span *ngIf="registerForm.controls.emailAddress.hasError('required')">
+      {{ 'common.errors.required' | translate }}
+    </span>
+    <span *ngIf="registerForm.controls.emailAddress.hasError('email')">
+      {{ 'common.errors.invalidEmail' | translate }}
+    </span>
+  </ion-note>
+
+  <!-- Phone Number Input -->
+  <ion-input [label]="'components.registerForm.phoneNumberLabel' | translate"
+             label-placement="stacked"
+             fill="outline"
+             [placeholder]="'components.registerForm.phoneNumberPlaceholder' | translate"
+             formControlName="phoneNumber"
+             type="tel"
+             inputmode="numeric"
+             pattern="[0-9]*"
+  >
+  </ion-input>
+  <ion-note *ngIf="(registerForm.controls.phoneNumber.dirty || registerForm.controls.phoneNumber.touched)  && registerForm.controls.phoneNumber.invalid" color="danger">
+    <span *ngIf="registerForm.controls.phoneNumber.hasError('required')">
+      {{ 'common.errors.required' | translate }}
+    </span>
+    <span *ngIf="registerForm.controls.phoneNumber.hasError('pattern')">
+      {{ 'common.errors.invalidPhoneNumber' | translate }}
+    </span>
+  </ion-note>
+
+  <!-- Career Input -->
+  <ion-input [label]="'components.registerForm.careerLabel' | translate"
+             label-placement="stacked"
+             fill="outline"
+             [placeholder]="'components.registerForm.careerPlaceholder' | translate"
+             formControlName="career"
+             [errorText]="registerForm.controls.career.hasError('required') &&
+             registerForm.controls.career.touched ?
+             ('common.errors.required' | translate ) : ''"
+  >
+  </ion-input>
+
+  <!-- Password Input -->
+  <ion-input [label]="'components.registerForm.passwordLabel' | translate"
+             label-placement="stacked"
+             fill="outline"
+             [placeholder]="'components.registerForm.passwordPlaceholder' | translate"
+             formControlName="password"
+             type="password">
+  </ion-input>
+  <ion-note *ngIf="(registerForm.controls.password.dirty || registerForm.controls.password.touched)  && registerForm.controls.password.invalid" color="danger">
+    <span *ngIf="registerForm.controls.password.hasError('required')">
+      {{ 'common.errors.required' | translate }}
+    </span>
+    <span *ngIf="registerForm.controls.password.hasError('minlength')">
+      {{ 'common.errors.shortPassword' | translate }}
+    </span>
+  </ion-note>
+
+  <!-- Confirm Password Input -->
+  <ion-input [label]="'components.registerForm.confirmPasswordLabel' | translate"
+             label-placement="stacked"
+             fill="outline"
+             [placeholder]="'components.registerForm.confirmPasswordPlaceholder' | translate"
+             formControlName="confirmPassword"
+             type="password">
+  </ion-input>
+  <ion-note *ngIf="(registerForm.controls.confirmPassword.dirty || registerForm.controls.confirmPassword.touched)  && registerForm.controls.confirmPassword.invalid" color="danger">
+    <span *ngIf="registerForm.controls.confirmPassword.hasError('required')">
+      {{ 'common.errors.required' | translate }}
+    </span>
+    <span *ngIf="registerForm.controls.confirmPassword.hasError('areEqual')">
+      {{ 'common.errors.passwordsNotMatch' | translate }}
+    </span>
+  </ion-note>
+
+  <!-- Submit Button -->
+  <ion-button expand="full" color="primary" [disabled]="registerForm.invalid" (click)="onSubmit()">
+    {{ 'components.registerForm.submitButton' | translate }}
+  </ion-button>
+</form>
+
+<ion-button expand="full" color="secondary" class="full-width" routerLink="/login">
+  {{ 'components.registerForm.toLoginButton' | translate }}
+</ion-button>

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AuthCredentials } from '@app_core/auth/model/auth.model';
 import { UserSessionService } from '@app_core/auth/services/user-session.service';
 import { CoreModule } from '@app_core/core.module';
@@ -21,6 +22,7 @@ import { mailOutline, lockClosedOutline } from 'ionicons/icons';
     ReactiveFormsModule,
     CoreModule,
     TranslateModule,
+    RouterLink,
   ]
 })
 export class LoginFormComponent {

@@ -3,7 +3,7 @@
 }
 
 .one-row-form {
-  width: clamp(250px, 100%, 350px);
+  width: clamp(250px, 100%, 400px);
   display: flex;
   flex-direction: column;
   gap: 2ch;
@@ -14,8 +14,14 @@
     gap: 2ch;
     margin-top: 2ch;
 
-    mat-form-field {
-      width: 100%;
+    ion-input {
+      margin-bottom: 2ch !important;
+    }
+
+    ion-note {
+      margin-top: -5ch;
+      font-size: 0.75rem;
+      padding-inline-start: var(--padding-start);
     }
   }
 }

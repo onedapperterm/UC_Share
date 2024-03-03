@@ -3,35 +3,47 @@
 <form [formGroup]="loginForm" novalidate>
 
   <ion-input [label]="'components.loginForm.emailLabel' | translate"
-    label-placement="stacked"
-    fill="outline"
-    placeholder="email@email.com"
-    formControlName="emailAddress"
-    [errorText]="loginForm.controls.emailAddress.hasError('required') && loginForm.controls.emailAddress.touched ? ('components.loginForm.emailRequiredError' | translate) :
-    loginForm.controls.emailAddress.hasError('email') && loginForm.controls.emailAddress.touched ? ('components.loginForm.invalidEmailError' | translate) :
-    ''"
+              label-placement="stacked"
+              fill="outline"
+              placeholder="email@email.com"
+              formControlName="emailAddress"
   >
     <ion-icon slot="start" name="mail-outline"></ion-icon>
   </ion-input>
 
+  <ion-note *ngIf="(loginForm.controls.emailAddress.dirty || loginForm.controls.emailAddress.touched)  && loginForm.controls.emailAddress.invalid" color="danger">
+    <span *ngIf="loginForm.controls.emailAddress.hasError('required')">
+      {{ 'common.errors.required' | translate }}
+    </span>
+    <span *ngIf="loginForm.controls.emailAddress.hasError('email')">
+      {{ 'common.errors.invalidEmail' | translate }}
+    </span>
+  </ion-note>
+
   <ion-input [label]="'components.loginForm.passwordLabel' | translate"
-    label-placement="stacked"
-    fill="outline"
-    placeholder="password"
-    formControlName="password"
-    type="password"
-    [errorText]="loginForm.controls.password.hasError('required') && loginForm.controls.password.touched ? ('components.loginForm.passwordRequiredError' | translate) :
-    loginForm.controls.password.hasError('minlength') && loginForm.controls.password.touched ? ('components.loginForm.shortPasswordError' | translate) :
-    ''"
+              label-placement="stacked"
+              fill="outline"
+              placeholder="password"
+              formControlName="password"
+              type="password"
   >
     <ion-icon slot="start" name="lock-closed-outline" aria-hidden="true"></ion-icon>
   </ion-input>
+
+  <ion-note *ngIf="(loginForm.controls.password.dirty || loginForm.controls.password.touched)  && loginForm.controls.password.invalid" color="danger">
+    <span *ngIf="loginForm.controls.password.hasError('required')">
+      {{ 'common.errors.required' | translate }}
+    </span>
+    <span *ngIf="loginForm.controls.password.hasError('minlength')">
+      {{ 'common.errorrs.shortPassword' | translate }}
+    </span>
+  </ion-note>
 
   <ion-button expand="full" color="primary" [disabled]="loginForm.invalid" (click)="onSubmit()">
     {{ 'components.loginForm.loginButton' | translate }}
   </ion-button>
 </form>
-<ion-button expand="full" color="secondary" class="full-width">
+<ion-button expand="full" color="secondary" class="full-width" routerLink="/register">
   {{ 'components.loginForm.registerButton' | translate }}
 </ion-button>
 <ion-note>{{ 'components.loginForm.registerHint' | translate }}</ion-note>
