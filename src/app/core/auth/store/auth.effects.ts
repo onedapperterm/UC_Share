@@ -31,6 +31,33 @@ export class AuthEffects {
     )
   );
 
+  public setUser$ = createEffect(
+    () =>
+      this._actions$.pipe(
+        ofType(AuthActions.setUser),
+        exhaustMap(() => this._authService.getAuthState()),
+        map(authState => {
+          if (authState) {
+            return AuthActions.loginSuccess({
+              session: {
+                uid: authState.uid,
+                email: authState.email,
+                phoneNumber: authState.phoneNumber,
+                photoURL: authState.photoURL,
+                exp: 4342
+              }
+            });
+          } else {
+            return AuthActions.loginFailure({
+              error: new Error('User not found'),
+              message: 'User not found',
+              translationKey: 'noUserFound'
+            });
+          }
+        }
+      ),
+  ));
+
   /**
    * Handles the login success action by navigating to '/dash' and updating local storage.
    */
@@ -38,7 +65,7 @@ export class AuthEffects {
     () =>
       this._actions$.pipe(
         ofType(AuthActions.loginSuccess),
-        tap((loginSuccessResponse) => this.onSuccess(loginSuccessResponse)),
+        tap(() => this._router.navigateByUrl(this._localStorageService.getRedirectUrl())),
       ),
     { dispatch: false }
   );
@@ -52,7 +79,6 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-
   /**
    * Handles the logout action by navigating to '/login' and removing stored state from local storage.
    */
@@ -60,10 +86,7 @@ export class AuthEffects {
     () =>
       this._actions$.pipe(
         ofType(AuthActions.logout),
-        tap(_ => {
-          this._localStorageService.removeStoredAuthState();
-          this._router.navigateByUrl('/login');
-        })
+        tap(_ => this._router.navigateByUrl('/login'))
       ),
     { dispatch: false }
   );
@@ -80,14 +103,9 @@ export class AuthEffects {
     else return AuthActions.loginSuccess(response as LoginSuccessResponse);
   }
 
-  private onSuccess(response: LoginSuccessResponse):void {
-    this._localStorageService.setAuthState(response.accessToken, response.refreshToken);
-    this._router.navigateByUrl(this._localStorageService.getRedirectUrl());
-  }
-
   private onFailure(response: LoginFailResponse):void {
     logger(`Loggin attempt failure | ${response.message}`, 'warn');
     // this._notificationsService.newNotification(response.translationKey);
-    this._router.navigateByUrl('');
+    this._router.navigateByUrl('/login');
   }
 }

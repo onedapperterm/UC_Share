@@ -34,7 +34,8 @@ bootstrapApplication(AppComponent, {
         navigationActionTiming: NavigationActionTiming.PostActivation
       }
     ),
-    importProvidersFrom(
+    importProvidersFrom([
+      CoreModule,
       TranslateModule.forRoot({
         loader: {
           provide: TranslateLoader,
@@ -42,8 +43,7 @@ bootstrapApplication(AppComponent, {
           deps: [HttpClient]
         }
       }),
-    ),
-    importProvidersFrom(CoreModule),
+    ]),
   ],
 });
 

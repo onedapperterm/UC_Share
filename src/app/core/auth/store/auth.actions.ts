@@ -16,4 +16,9 @@ export const loginFailure = createAction(
   props<LoginFailResponse>()
 );
 
+export const setUser = createAction(
+  '[Auth] Set User',
+  props<{start: boolean}>()
+);
+
 export const logout = createAction('[Auth] Logout');

@@ -1,16 +1,11 @@
 import { Injectable } from '@angular/core';
 import { CoreState } from '../../store/core.state';
-import { AuthState, StoredAuthState } from '../../auth/model/auth.model';
-import { initialAuthState } from '../../auth/store/auth.reducer';
 import { CoreRouterState } from '../../routing/store/core-router.state';
 import { Router } from '@angular/router';
 import { CoreSettingsState } from '../../settings/model/core-settings.model';
 import { initialSettingsState } from '../../settings/store/settings.reducer';
-import { logger } from '@app_core/util/logger.util';
-import { UserSessionService } from '@app_core/auth/services/user-session.service';
 
 const APP_PREFIX = 'UCS-';
-const AUTH_KEY = 'AUTH';
 const ROUTER_KEY = 'ROUTER';
 const USER_SETTINGS_KEY = 'USER_SETTINGS';
 
@@ -27,14 +22,6 @@ export class LocalStorageService {
   constructor(
     private _router: Router,
   ) {}
-
-  public setAuthState(accessToken: string, refreshToken: string):void {
-    const authState: StoredAuthState = {
-      accessToken: accessToken,
-      refreshToken:refreshToken,
-    }
-    this.setItem(AUTH_KEY, authState);
-  }
 
   public setLatestRouteState(url?: string):void {
     let path = this._router.parseUrl(url || '/dash');
@@ -53,36 +40,14 @@ export class LocalStorageService {
   }
 
   /**
-   * Remove stored auth state from local storage.
-   * @returns {void}
-   * @public
-   */
-  public removeStoredAuthState():void {
-    this.removeItem(AUTH_KEY);
-  }
-
-  /**
    * Load initial core state.
    * @returns {CoreState} - The initial core state.
    * @public
    */
   public static loadInitialCoreState(): CoreState {
     return {
-      auth: LocalStorageService.getValidAuthStateFromStorage(),
       settings: LocalStorageService.getItem(USER_SETTINGS_KEY) as CoreSettingsState || initialSettingsState,
      };
-  }
-
-  /**
-   * Get stored valid authentication state from local storage.
-   * @returns {AuthState | null} - The stored authentication state or null if not found or invalid.
-   * @private
-   */
-  private static getValidAuthStateFromStorage(): AuthState {
-    const authState = LocalStorageService.getItem(AUTH_KEY);
-    return initialAuthState;
-
-    // return recoveredState;
   }
 
   /**

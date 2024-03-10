@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AuthCredentials, AuthState, DecodedAccessToken } from '../model/auth.model';
+import { AuthCredentials, AuthState } from '../model/auth.model';
 import { loginRequest, logout } from '../store/auth.actions';
 import { Observable, of, switchMap, } from 'rxjs';
-import { selectCurrentSession, selectCurrentUserId, selectSessionPrivileges } from '../store/auth.selectors';
-import { SimplifiedUserData, SystemPrivilege, UserSession } from '../model/user.model';
+import { selectCurrentSession, selectCurrentUserId, } from '../store/auth.selectors';
+import { UserSession } from '../model/user.model';
 // import { UserClientService } from '@app_services/client/user/user-client/user-client.service';
 
 @Injectable({
@@ -29,11 +29,7 @@ export class UserSessionService {
     return this._store.select(selectCurrentSession);
   }
 
-  public getPrivileges(): Observable<SystemPrivilege[]> {
-    return this._store.select(selectSessionPrivileges);
-  }
-
-  public getUserId(): Observable<number | null> {
+  public getUserId(): Observable<string | null> {
     return this._store.select(selectCurrentUserId);
   }
 

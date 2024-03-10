@@ -11,7 +11,7 @@ import { settingsReducer } from "../settings/store/settings.reducer";
 import { CoreSettingEffects } from "../settings/store/settings.effects";
 
 export interface CoreState {
-  auth: AuthState;
+  auth?: AuthState;
   router?: CoreRouterState;
   settings?: CoreSettingsState;
 }

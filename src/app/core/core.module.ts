@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClientModule, } from '@angular/common/http';
-import { AuthInterceptor } from './auth/http-interceptors/auth.interceptor';
+import { HttpClientModule, } from '@angular/common/http';
+import { AngularFireModule } from '@angular/fire/compat';
+import { environment } from 'src/environments/environment';
 
 
 @NgModule({
@@ -9,13 +10,7 @@ import { AuthInterceptor } from './auth/http-interceptors/auth.interceptor';
   imports: [
     CommonModule,
     HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig)
   ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    },
-  ]
 })
 export class CoreModule { }
