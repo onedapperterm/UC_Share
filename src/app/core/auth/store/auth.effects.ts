@@ -8,6 +8,8 @@ import { LocalStorageService } from '../../services/local-storage/local-storage.
 import { logger } from '@app_core/util/logger.util';
 import { AuthCredentials, LoginFailResponse, LoginResponse, LoginSuccessResponse } from '../model/auth.model';
 import { Action } from '@ngrx/store';
+import { AppUser, CreateUserDto } from 'src/app/model/user.data';
+import { UserSessionService } from '../services/user-session.service';
 // import { NotificationsService } from '@app_services/notifications/notifications.service';
 
 @Injectable()
@@ -17,9 +19,45 @@ export class AuthEffects {
     private _router: Router,
     private _actions$: Actions,
     private _authService: AuthService,
+    private _userSessionService: UserSessionService,
     private _localStorageService: LocalStorageService,
     // private _notificationsService: NotificationsService,
   ) {}
+
+  public signUpRequest$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(AuthActions.signUpRequest),
+      exhaustMap((action) => this.onSignUpRequest(action.dto))
+    )
+  );
+
+  public signUpSuccess$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(AuthActions.signUpSuccess),
+      map(res => {
+        let user: AppUser = {
+          uid: res.uid,
+          email: res.dto.email,
+          phoneNumber: res.dto.phoneNumber,
+          displayName: res.dto.displayName,
+          firstName: res.dto.firstName,
+          lastName: res.dto.lastName,
+          career: res.dto.career,
+          roles: res.dto.roles,
+          photoURL: null,
+        }
+        return AuthActions.saveUserData(user);
+      }),
+    ),
+  );
+
+  public saveUserData$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(AuthActions.saveUserData),
+      exhaustMap((action) => this._userSessionService.updateUserData(action)),
+    ),
+    { dispatch: false }
+  );
 
   /**
    * Handles the login request action by dispatching success or failure actions accordingly.
@@ -27,42 +65,20 @@ export class AuthEffects {
   public loginRequest$ = createEffect(() =>
     this._actions$.pipe(
       ofType(AuthActions.loginRequest),
-      exhaustMap((action) => this.onRequest(action.credentials))
+      exhaustMap((action) => this.onLoginRequest(action.credentials))
     )
   );
 
-  public setUser$ = createEffect(
-    () =>
+  public setUserSession$ = createEffect(() =>
       this._actions$.pipe(
-        ofType(AuthActions.setUser),
-        exhaustMap(() => this._authService.getAuthState()),
-        map(authState => {
-          if (authState) {
-            return AuthActions.loginSuccess({
-              session: {
-                uid: authState.uid,
-                email: authState.email,
-                phoneNumber: authState.phoneNumber,
-                photoURL: authState.photoURL,
-                exp: 4342
-              }
-            });
-          } else {
-            return AuthActions.loginFailure({
-              error: new Error('User not found'),
-              message: 'User not found',
-              translationKey: 'noUserFound'
-            });
-          }
-        }
-      ),
+        ofType(AuthActions.setInitialAuthState),
+        exhaustMap(() => this._authService.checkFireAuthState()),
   ));
 
   /**
    * Handles the login success action by navigating to '/dash' and updating local storage.
    */
-  public loginSuccess$ = createEffect(
-    () =>
+  public loginSuccess$ = createEffect(() =>
       this._actions$.pipe(
         ofType(AuthActions.loginSuccess),
         tap(() => this._router.navigateByUrl(this._localStorageService.getRedirectUrl())),
@@ -70,8 +86,7 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-  public loginFailure$ = createEffect(
-    () =>
+  public loginFailure$ = createEffect(() =>
       this._actions$.pipe(
         ofType(AuthActions.loginFailure),
         tap((loginFailureResponse) => this.onFailure(loginFailureResponse)),
@@ -86,21 +101,33 @@ export class AuthEffects {
     () =>
       this._actions$.pipe(
         ofType(AuthActions.logout),
+        exhaustMap(() => this._authService.logout()),
         tap(_ => this._router.navigateByUrl('/login'))
       ),
     { dispatch: false }
   );
 
-  private onRequest(credentials: AuthCredentials): Observable<Action> {
-    return this._authService.login(credentials)
+  private onSignUpRequest(dto: CreateUserDto): Observable<Action> {
+    return this._authService.signUp(dto)
       .pipe(
-        map((loginResponse) => this.validateSuccesResponse( loginResponse )),
+        map((signUpResponse) => {
+          if('error' in signUpResponse) return AuthActions.signUpFailure(signUpResponse as LoginFailResponse);
+          else return AuthActions.signUpSuccess({
+            uid: (signUpResponse as LoginSuccessResponse).session.uid,
+            dto: dto,
+          });
+        }),
       )
   }
 
-  private validateSuccesResponse(response: LoginResponse):Action {
-    if('error' in response) return AuthActions.loginFailure(response as LoginFailResponse);
-    else return AuthActions.loginSuccess(response as LoginSuccessResponse);
+  private onLoginRequest(credentials: AuthCredentials): Observable<Action> {
+    return this._authService.login(credentials)
+      .pipe(
+        map((loginResponse) => {
+          if('error' in loginResponse) return AuthActions.loginFailure(loginResponse as LoginFailResponse);
+          else return AuthActions.loginSuccess(loginResponse as LoginSuccessResponse);
+        }),
+      )
   }
 
   private onFailure(response: LoginFailResponse):void {

@@ -59,6 +59,7 @@ export class CoreSettingEffects {
   }
 
   private setTheme(theme: string): void {
+    console.log('theme:', theme);
     const classList = this._document.body.classList;
     const toRemove = Array.from(classList).filter((item: string) => item.includes('-theme'));
     if (toRemove.length) {

@@ -4,7 +4,7 @@ import { updateLanguageSettings, updateThemeSettings } from "./settings.actions"
 
 export const initialSettingsState: CoreSettingsState = {
   language: 'en',
-  theme: 'light'
+  theme: 'dark'
 }
 
 const _settingsReducer = createReducer(

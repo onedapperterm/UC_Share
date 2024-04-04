@@ -1,5 +1,4 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { UserSession } from "./user.model";
 import { OperationType, User } from "firebase/auth";
 
 export interface AuthCredentials {
@@ -12,6 +11,15 @@ export interface AuthState {
   isLoggedIn: boolean;
   isLoading: boolean;
   authError?: string;
+}
+
+export interface UserSession {
+  uid: string;
+  email: string | null;
+  phoneNumber: string | null;
+  photoURL: string | null;
+  exp?: number;
+  displayName?: string | null;
 }
 
 export interface LoginResponse {

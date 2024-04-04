@@ -1,4 +1,4 @@
-import { enableProdMode, importProvidersFrom } from '@angular/core';
+import { enableProdMode, importProvidersFrom, isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter } from '@angular/router';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
@@ -15,6 +15,7 @@ import { CoreRouterSerializer } from './app/core/routing/store/router-state.seri
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { httpLoaderFactory } from './app/core/i18n/http-loader-factory';
 import { CoreModule } from './app/core/core.module';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 if (environment.production) {
   enableProdMode();
@@ -28,6 +29,14 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(),
     provideStore(coreReducers, {metaReducers}),
     provideEffects(coreEffects),
+    provideStoreDevtools({
+      maxAge: 25,
+      logOnly: !isDevMode(),
+      autoPause: true,
+      trace: false, //  If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
+      traceLimit: 75,
+      connectInZone: true
+    }),
     provideRouterStore(
       {
         serializer: CoreRouterSerializer,

@@ -1,6 +1,6 @@
 import { Action, createReducer, on } from "@ngrx/store";
 import { AuthState, LoginFailResponse, LoginSuccessResponse } from "../model/auth.model";
-import { setUser, loginFailure, loginRequest, loginSuccess, logout } from "./auth.actions";
+import { setInitialAuthState, loginFailure, loginRequest, loginSuccess, logout } from "./auth.actions";
 
 export const initialAuthState: AuthState = {
   session: null,
@@ -10,7 +10,7 @@ export const initialAuthState: AuthState = {
 
 const _authReducer = createReducer(
   initialAuthState,
-  on(setUser, (state: AuthState) => {
+  on(setInitialAuthState, (state: AuthState) => {
     return {
       ...state,
       isLoading: true
@@ -34,8 +34,6 @@ const _authReducer = createReducer(
     return {
       ...state,
       session: null,
-      accessToken: null,
-      refreshToken: null,
       isLoggedIn: false,
       isLoading: false,
       authError: response.message
@@ -45,8 +43,6 @@ const _authReducer = createReducer(
     return {
       ...state,
       session: null,
-      accessToken: null,
-      refreshToken: null,
       isLoggedIn: false,
       isLoading: false,
       authError: undefined

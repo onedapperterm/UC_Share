@@ -30,13 +30,13 @@
              label-placement="stacked"
              fill="outline"
              [placeholder]="'components.registerForm.emailPlaceholder' | translate"
-             formControlName="emailAddress">
+             formControlName="email">
   </ion-input>
-  <ion-note *ngIf="(registerForm.controls.emailAddress.dirty || registerForm.controls.emailAddress.touched)  && registerForm.controls.emailAddress.invalid" color="danger">
-    <span *ngIf="registerForm.controls.emailAddress.hasError('required')">
+  <ion-note *ngIf="(registerForm.controls.email.dirty || registerForm.controls.email.touched)  && registerForm.controls.email.invalid" color="danger">
+    <span *ngIf="registerForm.controls.email.hasError('required')">
       {{ 'common.errors.required' | translate }}
     </span>
-    <span *ngIf="registerForm.controls.emailAddress.hasError('email')">
+    <span *ngIf="registerForm.controls.email.hasError('email')">
       {{ 'common.errors.invalidEmail' | translate }}
     </span>
   </ion-note>

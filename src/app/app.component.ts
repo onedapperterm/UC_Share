@@ -1,30 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { setUser } from '@app_core/auth/store/auth.actions';
+import { setInitialAuthState } from '@app_core/auth/store/auth.actions';
 import { CoreModule } from '@app_core/core.module';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { ColorThemeService } from '@app_core/services/ui-theme/color-theme.service';
+import { selectCurrentTheme } from '@app_core/settings/store/settings.selectors';
+import { IonApp, IonLoading, IonRouterOutlet } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   standalone: true,
-  imports: [IonApp, IonRouterOutlet, CoreModule, TranslateModule],
+  imports: [
+    IonApp,
+    IonRouterOutlet,
+    IonLoading,
+    CoreModule,
+    TranslateModule,
+  ],
 })
 export class AppComponent implements OnInit{
 
   constructor(
-    private store: Store,
-    private TranslateService: TranslateService,
+    private _store: Store,
+    private _translateService: TranslateService,
+    private _colorThemeService: ColorThemeService,
   ) {
   }
 
   ngOnInit() {
-    this.TranslateService.use('en');
-    this.store.dispatch(setUser({start: true}));
-
-    this.store.subscribe((state) => {
-      console.log('store:', state);
-    });
+    this._translateService.use('en');
+    this._store.dispatch(setInitialAuthState({start: true}));
+    this._store.select(selectCurrentTheme).pipe(take(1)).subscribe(theme => this._colorThemeService.setTheme(theme));
   }
+
 }

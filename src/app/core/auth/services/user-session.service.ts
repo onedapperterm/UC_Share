@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AuthCredentials, AuthState } from '../model/auth.model';
+import { AuthCredentials, AuthState, UserSession } from '../model/auth.model';
 import { loginRequest, logout } from '../store/auth.actions';
-import { Observable, of, switchMap, } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { selectCurrentSession, selectCurrentUserId, } from '../store/auth.selectors';
-import { UserSession } from '../model/user.model';
-// import { UserClientService } from '@app_services/client/user/user-client/user-client.service';
+import { FirestoreDatabaseService } from '@app_services/firestore/firestore-database.service';
+import { DatabaseCollectionName } from 'src/app/model/firetore-database.data';
+import { AppUser } from 'src/app/model/user.data';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserSessionService {
 
+  private readonly collection: DatabaseCollectionName = 'users';
+
   constructor(
     private _store: Store<AuthState>,
-    // private _userClientService: UserClientService,
+    private _firestoreDatabaseService: FirestoreDatabaseService,
   ) { }
 
   public login(credentials: AuthCredentials):void {
@@ -33,10 +36,18 @@ export class UserSessionService {
     return this._store.select(selectCurrentUserId);
   }
 
-  // public getCurrentUserInfo(): Observable<SimplifiedUserData | null> {
-  //   return this.getSession().pipe(
-  //     switchMap(session => session ? this._userClientService.getSimplifiedUserDataById(session.id) : of(null))
-  //   )
-  // }
+  public updateUserData(data: AppUser): Observable<void> {
+    const doc = {
+      data: data,
+      id: data.uid,
+      collection: this.collection,
+    }
+    return this._firestoreDatabaseService.setDocument(doc)
+  }
+
+  public getUserData(): Observable<AppUser | null> {
+    return this.getUserId().pipe(
+      switchMap(uid=> uid ? this._firestoreDatabaseService.getDocument(this.collection, uid) as Observable<AppUser | null> : of(null)));
+  }
 
 }
