@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AuthCredentials, FirebaseUserResponse, LoginFailResponse, LoginResponse, LoginSuccessResponse, } from '../model/auth.model';
-import { Observable, catchError, from, map, of, filter, withLatestFrom, switchMap } from 'rxjs';
+import { Observable, catchError, from, map, of, switchMap } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { UserCredential, getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, User } from 'firebase/auth';
+import { UserCredential, getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { Action } from '@ngrx/store';
 import { loginFailure, loginSuccess } from '../store/auth.actions';
 import { CreateUserDto } from 'src/app/model/user.data';
@@ -64,6 +64,7 @@ export class AuthService {
             phoneNumber: userData.phoneNumber,
             photoURL: userData.photoURL,
             displayName: userData.displayName,
+            roles: userData.roles,
           },
         }
         return successResponse;
@@ -84,6 +85,7 @@ export class AuthService {
               phoneNumber: authState.phoneNumber,
               photoURL: authState.photoURL,
               displayName: authState.displayName,
+              roles: authState.roles,
             }
           });
         } else {

@@ -8,8 +8,23 @@
     </ion-toolbar>
   </ion-header>
 
-  <div id="container" (click)="logout()" style="cursor: pointer;">
-    <strong>Logout</strong>
+  <strong (click)="logout()" style="cursor: pointer;">Logout</strong>
+
+  <div class="tab-bar">
+    <ion-tab-button>
+      <ion-icon name="car-sport-outline"></ion-icon>
+      viajes
+    </ion-tab-button>
+
+    <ion-tab-button>
+      <ion-icon name="analytics-outline"></ion-icon>
+      rutas
+    </ion-tab-button>
+
+    <ion-tab-button>
+      <ion-icon name="person-circle-outline"></ion-icon>
+      cuenta
+    </ion-tab-button>
   </div>
 </ion-content>
 }

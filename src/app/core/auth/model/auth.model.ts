@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { OperationType, User } from "firebase/auth";
+import { Role } from "src/app/model/user.data";
 
 export interface AuthCredentials {
   emailAddress: string;
@@ -13,12 +14,14 @@ export interface AuthState {
   authError?: string;
 }
 
+//TODO: Julian of the future, fix this f***ing mess, this thing is like a f***ing Frankenstein monster
 export interface UserSession {
   uid: string;
   email: string | null;
   phoneNumber: string | null;
   displayName?: string | null;
   photoURL: string | null;
+  roles: Role[];
   exp?: number;
 }
 
