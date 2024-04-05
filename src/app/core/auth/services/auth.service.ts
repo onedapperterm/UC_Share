@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AuthCredentials, FirebaseUserResponse, LoginFailResponse, LoginResponse, LoginSuccessResponse, } from '../model/auth.model';
-import { Observable, catchError, from, map, of, filter } from 'rxjs';
+import { Observable, catchError, from, map, of, filter, withLatestFrom, switchMap } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { UserCredential, getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { UserCredential, getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, User } from 'firebase/auth';
 import { Action } from '@ngrx/store';
 import { loginFailure, loginSuccess } from '../store/auth.actions';
 import { CreateUserDto } from 'src/app/model/user.data';
+import { UserSessionService } from './user-session.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +15,14 @@ export class AuthService {
 
   constructor(
     private _ngFireAuth: AngularFireAuth,
+    private _userSessionService: UserSessionService,
   ) {}
 
   public login(credentials: AuthCredentials):Observable<LoginResponse> {
     return from(signInWithEmailAndPassword(getAuth(), credentials.emailAddress, credentials.password))
       .pipe(
         catchError((error) => this.handleRequestError(error)),
-        map(response => this.validateResponse(response as UserCredential)),
+        switchMap(response=> this.validateResponse(response as UserCredential)),
       )
   }
 
@@ -28,7 +30,7 @@ export class AuthService {
     return from(createUserWithEmailAndPassword(getAuth(), dto.email, dto.password))
       .pipe(
         catchError((error) => this.handleRequestError(error)),
-        map(response => this.validateResponse(response as UserCredential)),
+        switchMap(response => this.validateResponse(response as UserCredential)),
       )
   }
 
@@ -40,35 +42,40 @@ export class AuthService {
     });
   }
 
-  //TODO: call the user service to get the user data
-  private validateResponse(response: FirebaseUserResponse | LoginFailResponse):LoginResponse {
-    if('error' in response) return response;
+  private validateResponse(response: FirebaseUserResponse | LoginFailResponse): Observable<LoginResponse> {
+    if('error' in response) return of(response);
 
-    if(!response.user) {
-      const errorResponse: LoginFailResponse = {
-        error: new Error('User not found'),
-        message: 'User not found',
-        translationKey: 'noUserFound'
-      }
-      return errorResponse;
+    const errorResponse: LoginFailResponse = {
+      error: new Error('User not found'),
+      message: 'User not found',
+      translationKey: 'noUserFound'
     }
 
-    const successResponse: LoginSuccessResponse = {
-      session: {
-        uid: response.user.uid,
-        email: response.user.email,
-        phoneNumber: response.user.providerData[0].phoneNumber,
-        photoURL: response.user.providerData[0].photoURL,
-      },
-    }
-    return successResponse;
+    if(!response.user) return of(errorResponse);
+
+    return this._userSessionService.getUserDataById(response.user.uid).pipe(
+      map(userData => {
+        if (!userData || !response.user) return errorResponse;
+
+        const successResponse: LoginSuccessResponse = {
+          session: {
+            uid: response.user.uid,
+            email: response.user.email,
+            phoneNumber: userData.phoneNumber,
+            photoURL: userData.photoURL,
+            displayName: userData.displayName,
+          },
+        }
+        return successResponse;
+      }));
+
   }
 
   public checkFireAuthState():Observable<Action> {
     return this._ngFireAuth.authState.pipe(
-      filter(authState => !!authState),
+      switchMap(authState => authState ? this._userSessionService.getUserDataById(authState.uid): of(null)),
       map(authState => {
-        console.log('authState:', authState?.toJSON());
+        console.log('authState:', authState);
         if (authState) {
           return loginSuccess({
             session: {
@@ -76,6 +83,7 @@ export class AuthService {
               email: authState.email,
               phoneNumber: authState.phoneNumber,
               photoURL: authState.photoURL,
+              displayName: authState.displayName,
             }
           });
         } else {

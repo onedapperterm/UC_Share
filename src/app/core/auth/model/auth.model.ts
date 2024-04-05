@@ -17,9 +17,9 @@ export interface UserSession {
   uid: string;
   email: string | null;
   phoneNumber: string | null;
+  displayName?: string | null;
   photoURL: string | null;
   exp?: number;
-  displayName?: string | null;
 }
 
 export interface LoginResponse {
@@ -64,7 +64,7 @@ export interface FirebaseUserResponse {
       photoURL: string | null;
     }[];
   };
-  providerId: null | string;
+  providerId?: null | string;
   _tokenResponse: {
     kind: string;
     localId: string;
@@ -75,6 +75,6 @@ export interface FirebaseUserResponse {
     refreshToken: string;
     expiresIn: string;
   };
-  operationType: string;
+  operationType?: string;
 }
 

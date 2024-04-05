@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentData } from '@angular/fire/compat/firestore';
 import { Observable, from, map } from 'rxjs';
-import { DatabaseDocument } from 'src/app/model/firetore-database.data';
-import { doc, getFirestore, setDoc, getDoc, DocumentSnapshot } from 'firebase/firestore';
+import { DatabaseDocument } from 'src/app/model/firestore-database.data';
+import { doc, getFirestore, setDoc, getDoc } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'

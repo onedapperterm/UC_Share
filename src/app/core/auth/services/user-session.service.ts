@@ -5,7 +5,7 @@ import { loginRequest, logout } from '../store/auth.actions';
 import { Observable, of, switchMap } from 'rxjs';
 import { selectCurrentSession, selectCurrentUserId, } from '../store/auth.selectors';
 import { FirestoreDatabaseService } from '@app_services/firestore/firestore-database.service';
-import { DatabaseCollectionName } from 'src/app/model/firetore-database.data';
+import { DatabaseCollectionName } from 'src/app/model/firestore-database.data';
 import { AppUser } from 'src/app/model/user.data';
 
 @Injectable({
@@ -45,9 +45,13 @@ export class UserSessionService {
     return this._firestoreDatabaseService.setDocument(doc)
   }
 
-  public getUserData(): Observable<AppUser | null> {
+  public getCurrentUserData(): Observable<AppUser | null> {
     return this.getUserId().pipe(
       switchMap(uid=> uid ? this._firestoreDatabaseService.getDocument(this.collection, uid) as Observable<AppUser | null> : of(null)));
+  }
+
+  public getUserDataById(userId: string): Observable<AppUser | null> {
+    return this._firestoreDatabaseService.getDocument(this.collection, userId) as Observable<AppUser | null>;
   }
 
 }
