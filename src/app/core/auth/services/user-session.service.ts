@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthCredentials, AuthState, UserSession } from '../model/auth.model';
-import { loginRequest, logout } from '../store/auth.actions';
+import { loginRequest, logout, signUpRequest } from '../store/auth.actions';
 import { Observable, of, switchMap } from 'rxjs';
 import { selectCurrentSession, selectCurrentUserId, } from '../store/auth.selectors';
 import { FirestoreDatabaseService } from '@app_services/firestore/firestore-database.service';
 import { DatabaseCollectionName } from 'src/app/model/firestore-database.data';
-import { AppUser } from 'src/app/model/user.data';
+import { AppUser, CreateUserDto } from 'src/app/model/user.data';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +22,10 @@ export class UserSessionService {
 
   public login(credentials: AuthCredentials):void {
     this._store.dispatch(loginRequest({ credentials: credentials }));
+  }
+
+  public signUp(data: CreateUserDto): void {
+    this._store.dispatch(signUpRequest({ dto: data }));
   }
 
   public logout(): void {

@@ -30,8 +30,32 @@ export class AuthService {
     return from(createUserWithEmailAndPassword(getAuth(), dto.email, dto.password))
       .pipe(
         catchError((error) => this.handleRequestError(error)),
-        switchMap(response => this.validateResponse(response as UserCredential)),
+        map(response => this.validateSingUpResponse(response as UserCredential)),
       )
+  }
+
+  private validateSingUpResponse(response: UserCredential): LoginResponse {
+    if('error' in response) return response;
+
+    const errorResponse: LoginFailResponse = {
+      error: new Error('User could not be created'),
+      message: 'User could not be created',
+      translationKey: 'noUserCreated'
+    }
+
+    if(!response.user) return errorResponse;
+
+    const successResponse: LoginSuccessResponse = {
+      session: {
+        uid: response.user.uid,
+        email: response.user.email,
+        phoneNumber: response.user.phoneNumber,
+        photoURL: response.user.photoURL,
+        displayName: response.user.displayName,
+        roles: []
+      },
+    }
+    return successResponse;
   }
 
   private handleRequestError(error: Error): Observable<LoginFailResponse> {

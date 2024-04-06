@@ -8,7 +8,7 @@ import { LocalStorageService } from '../../services/local-storage/local-storage.
 import { logger } from '@app_core/util/logger.util';
 import { AuthCredentials, LoginFailResponse, LoginResponse, LoginSuccessResponse } from '../model/auth.model';
 import { Action } from '@ngrx/store';
-import { AppUser, CreateUserDto } from 'src/app/model/user.data';
+import { AppUser, CreateUserDto, Role } from 'src/app/model/user.data';
 import { UserSessionService } from '../services/user-session.service';
 // import { NotificationsService } from '@app_services/notifications/notifications.service';
 
@@ -43,7 +43,7 @@ export class AuthEffects {
           firstName: res.dto.firstName,
           lastName: res.dto.lastName,
           career: res.dto.career,
-          roles: res.dto.roles,
+          roles: [Role.DRIVER, Role.PASSENGER],
           photoURL: null,
         }
         return AuthActions.saveUserData(user);
@@ -108,9 +108,11 @@ export class AuthEffects {
   );
 
   private onSignUpRequest(dto: CreateUserDto): Observable<Action> {
+    console.log('sigUprequest', dto);
     return this._authService.signUp(dto)
       .pipe(
         map((signUpResponse) => {
+          console.log(signUpResponse);
           if('error' in signUpResponse) return AuthActions.signUpFailure(signUpResponse as LoginFailResponse);
           else return AuthActions.signUpSuccess({
             uid: (signUpResponse as LoginSuccessResponse).session.uid,

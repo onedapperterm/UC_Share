@@ -3,6 +3,7 @@ import { Component, OnInit, } from '@angular/core';
 import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@app_core/auth/services/auth.service';
+import { UserSessionService } from '@app_core/auth/services/user-session.service';
 import { CoreModule } from '@app_core/core.module';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
@@ -38,7 +39,7 @@ export class RegisterFormComponent implements OnInit{
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _authService: AuthService,
+    private _userSessionService: UserSessionService,
   ) {}
 
   ngOnInit() {
@@ -55,7 +56,7 @@ export class RegisterFormComponent implements OnInit{
     };
     delete data.confirmPassword;
 
-    this._authService.signUp(data as CreateUserDto).subscribe();
+    this._userSessionService.signUp(data as CreateUserDto);
   }
 
 }
