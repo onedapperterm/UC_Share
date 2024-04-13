@@ -39,11 +39,11 @@
     </span>
   </ion-note>
 
-  <ion-button expand="full" color="primary" [disabled]="loginForm.invalid" (click)="onSubmit()">
+  <ion-button expand="block" color="primary" [disabled]="loginForm.invalid" (click)="onSubmit()">
     {{ 'components.loginForm.loginButton' | translate }}
   </ion-button>
 </form>
-<ion-button expand="full" color="secondary" class="full-width" routerLink="/register">
+<ion-button expand="block" color="secondary" class="full-width" routerLink="/register">
   {{ 'components.loginForm.registerButton' | translate }}
 </ion-button>
 <ion-note>{{ 'components.loginForm.registerHint' | translate }}</ion-note>

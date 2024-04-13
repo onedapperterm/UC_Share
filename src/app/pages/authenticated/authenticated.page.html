@@ -1,0 +1,24 @@
+<ion-content [fullscreen]="true">
+  <ion-router-outlet></ion-router-outlet>
+
+  <ion-tabs>
+    <ion-tab-bar slot="home">
+      <ion-tab-button tab="home">
+        <ion-icon name="home-outline"></ion-icon>
+        {{'components.tabs.home' | translate}}
+      </ion-tab-button>
+      <ion-tab-button tab="trips">
+        <ion-icon name="car-sport-outline"></ion-icon>
+        {{'components.tabs.trips' | translate}}
+      </ion-tab-button>
+      <ion-tab-button tab="routes">
+        <ion-icon name="analytics-outline"></ion-icon>
+        {{'components.tabs.routes' | translate}}
+      </ion-tab-button>
+      <ion-tab-button tab="account">
+        <ion-icon name="person-circle-outline"></ion-icon>
+        {{'components.tabs.account' | translate}}
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-content>

@@ -6,7 +6,12 @@
       "invalidPhoneNumber": "Invalid phone number format, please check it!",
       "shortPassword": "Too short, check your password",
       "passwordsNotMatch": "Passwords do not match"
-    }
+    },
+    "language": "Language",
+    "darkMode": "Dark Mode",
+    "logout": "Logout",
+    "driver": "Driver",
+    "passenger": "Passenger"
   },
   "components": {
     "loginForm": {
@@ -35,6 +40,15 @@
       "careerPlaceholder": "Enter your career",
       "passwordPlaceholder": "Enter your password",
       "confirmPasswordPlaceholder": "Confirm your password"
+    },
+    "tabs": {
+      "home": "Home",
+      "trips": "Trips",
+      "routes": "Routes",
+      "account": "Account"
+    },
+    "account": {
+      "title": "Account"
     }
   }
 }

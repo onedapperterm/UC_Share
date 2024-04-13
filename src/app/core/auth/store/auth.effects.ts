@@ -6,9 +6,9 @@ import * as AuthActions from './auth.actions';
 import { AuthService } from '../services/auth.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { logger } from '@app_core/util/logger.util';
-import { AuthCredentials, LoginFailResponse, LoginResponse, LoginSuccessResponse } from '../model/auth.model';
+import { AuthCredentials, LoginFailResponse, LoginSuccessResponse } from '../model/auth.model';
 import { Action } from '@ngrx/store';
-import { AppUser, CreateUserDto, Role } from 'src/app/model/user.data';
+import { AppUser, CreateUserDto, } from 'src/app/model/user.data';
 import { UserSessionService } from '../services/user-session.service';
 // import { NotificationsService } from '@app_services/notifications/notifications.service';
 
@@ -43,7 +43,7 @@ export class AuthEffects {
           firstName: res.dto.firstName,
           lastName: res.dto.lastName,
           career: res.dto.career,
-          roles: [Role.DRIVER, Role.PASSENGER],
+          roles: res.dto.roles,
           photoURL: null,
         }
         return AuthActions.saveUserData(user);

@@ -1,0 +1,54 @@
+{
+  "common": {
+    "errors": {
+      "required": "Este campo es requerido",
+      "invalidEmail": "Formato de correo electrónico inválido, ¡por favor verifíquelo!",
+      "invalidPhoneNumber": "Formato de número de teléfono inválido, ¡por favor verifíquelo!",
+      "shortPassword": "Demasiado corto, verifique su contraseña",
+      "passwordsNotMatch": "Las contraseñas no coinciden"
+    },
+    "language": "Idioma",
+    "darkMode": "Modo Oscuro",
+    "logout": "Cerrar sesión",
+    "driver": "Conductor",
+    "passenger": "Pasajero"
+  },
+  "components": {
+    "loginForm": {
+      "mainTitle": "¡Bienvenido de nuevo!",
+      "mainLabel": "Inicie sesión con sus credenciales:",
+      "emailLabel": "Su correo electrónico",
+      "passwordLabel": "Su contraseña",
+      "loginButton": "¡Vamos!",
+      "registerButton": "Registrarse",
+      "registerHint": "¿Eres nuevo? ¿Quieres unirte? Haz clic en Registrarse y solicita una nueva cuenta para ti."
+    },
+    "registerForm": {
+      "firstNameLabel": "Nombre",
+      "lastNameLabel": "Apellido",
+      "emailLabel": "Dirección de correo electrónico",
+      "phoneNumberLabel": "Número de teléfono",
+      "careerLabel": "Carrera",
+      "passwordLabel": "Contraseña",
+      "confirmPasswordLabel": "Confirmar contraseña",
+      "submitButton": "Enviar",
+      "toLoginButton": "Volver al inicio de sesión",
+      "firstNamePlaceholder": "Ingrese su nombre",
+      "lastNamePlaceholder": "Ingrese su apellido",
+      "emailPlaceholder": "Ingrese su dirección de correo electrónico",
+      "phoneNumberPlaceholder": "Ingrese su número de teléfono",
+      "careerPlaceholder": "Ingrese su carrera",
+      "passwordPlaceholder": "Ingrese su contraseña",
+      "confirmPasswordPlaceholder": "Confirme su contraseña"
+    },
+    "tabs": {
+      "home": "Inicio",
+      "trips": "Viajes",
+      "routes": "Rutas",
+      "account": "Cuenta"
+    },
+    "account": {
+      "title": "Cuenta"
+    }
+  }
+}

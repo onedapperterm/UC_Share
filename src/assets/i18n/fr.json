@@ -1,0 +1,55 @@
+{
+  "common": {
+    "errors": {
+      "required": "Ce champ est requis",
+      "invalidEmail": "Format d'e-mail invalide, veuillez vérifier !",
+      "invalidPhoneNumber": "Format de numéro de téléphone invalide, veuillez vérifier !",
+      "shortPassword": "Trop court, vérifiez votre mot de passe",
+      "passwordsNotMatch": "Les mots de passe ne correspondent pas"
+    },
+    "language": "Langue",
+    "darkMode": "Mode Sombre",
+    "logout": "Déconnexion",
+    "driver": "Conducteur",
+    "passenger": "Passager"
+  },
+  "components": {
+    "loginForm": {
+      "mainTitle": "Bienvenue de retour !",
+      "mainLabel": "Connectez-vous avec vos identifiants :",
+      "emailLabel": "Votre e-mail",
+      "passwordLabel": "Votre mot de passe",
+      "loginButton": "Allons-y !",
+      "registerButton": "S'inscrire",
+      "registerHint": "Vous êtes nouveau ? Vous voulez rejoindre ? Cliquez sur S'inscrire et demandez un nouveau compte pour vous-même."
+    },
+    "registerForm": {
+      "firstNameLabel": "Prénom",
+      "lastNameLabel": "Nom de famille",
+      "emailLabel": "Adresse e-mail",
+      "phoneNumberLabel": "Numéro de téléphone",
+      "careerLabel": "Carrière",
+      "passwordLabel": "Mot de passe",
+      "confirmPasswordLabel": "Confirmer le mot de passe",
+      "submitButton": "Soumettre",
+      "toLoginButton": "Retour à la connexion",
+      "firstNamePlaceholder": "Entrez votre prénom",
+      "lastNamePlaceholder": "Entrez votre nom de famille",
+      "emailPlaceholder": "Entrez votre adresse e-mail",
+      "phoneNumberPlaceholder": "Entrez votre numéro de téléphone",
+      "careerPlaceholder": "Entrez votre carrière",
+      "passwordPlaceholder": "Entrez votre mot de passe",
+      "confirmPasswordPlaceholder": "Confirmez votre mot de passe"
+    },
+    "tabs": {
+      "home": "Accueil",
+      "trips": "Voyages",
+      "routes": "Itinéraires",
+      "account": "Compte"
+    },
+    "account": {
+      "title": "Compte"
+    }
+  }
+}
+

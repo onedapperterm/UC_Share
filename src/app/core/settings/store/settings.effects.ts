@@ -4,7 +4,7 @@ import { tap, withLatestFrom, } from 'rxjs';
 import * as SettingsActions from './settings.actions';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { CoreSettingsState, Language } from '../model/core-settings.model';
+import { CoreSettingsState, Language, Theme } from '../model/core-settings.model';
 import { DOCUMENT, Location } from '@angular/common';
 import { selectCoreSettingsState } from './settings.selectors';
 import { Store } from '@ngrx/store';
@@ -58,7 +58,7 @@ export class CoreSettingEffects {
     this._location.go(path.toString());
   }
 
-  private setTheme(theme: string): void {
+  private setTheme(theme: Theme): void {
     console.log('theme:', theme);
     const classList = this._document.body.classList;
     const toRemove = Array.from(classList).filter((item: string) => item.includes('-theme'));

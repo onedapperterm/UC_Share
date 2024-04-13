@@ -1,9 +1,6 @@
 import { UserSession } from "@app_core/auth/model/auth.model";
 
-export enum Role {
-  DRIVER = 'driver',
-  PASSENGER = 'passenger',
-}
+export type Role = 'driver' | 'passenger';
 
 export interface AppUser extends Omit<UserSession, 'exp'> {
   email: string;

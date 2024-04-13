@@ -1,0 +1,54 @@
+{
+  "common": {
+    "errors": {
+      "required": "Dieses Feld ist erforderlich",
+      "invalidEmail": "Ungültiges E-Mail-Format, bitte überprüfen Sie es!",
+      "invalidPhoneNumber": "Ungültiges Telefonnummer-Format, bitte überprüfen Sie es!",
+      "shortPassword": "Zu kurz, überprüfen Sie Ihr Passwort",
+      "passwordsNotMatch": "Passwörter stimmen nicht überein"
+    },
+    "language": "Sprache",
+    "darkMode": "Dunkler Modus",
+    "logout": "Ausloggen",
+    "driver": "Fahrer",
+    "passenger": "Passagier"
+  },
+  "components": {
+    "loginForm": {
+      "mainTitle": "Willkommen zurück!",
+      "mainLabel": "Melden Sie sich mit Ihren Anmeldeinformationen an:",
+      "emailLabel": "Ihre E-Mail",
+      "passwordLabel": "Ihr Passwort",
+      "loginButton": "Los geht's!",
+      "registerButton": "Registrieren",
+      "registerHint": "Sind Sie neu? Möchten Sie beitreten? Klicken Sie auf Registrieren und fordern Sie ein neues Konto für sich an."
+    },
+    "registerForm": {
+      "firstNameLabel": "Vorname",
+      "lastNameLabel": "Nachname",
+      "emailLabel": "E-Mail-Adresse",
+      "phoneNumberLabel": "Telefonnummer",
+      "careerLabel": "Beruf",
+      "passwordLabel": "Passwort",
+      "confirmPasswordLabel": "Passwort bestätigen",
+      "submitButton": "Absenden",
+      "toLoginButton": "Zurück zur Anmeldung",
+      "firstNamePlaceholder": "Geben Sie Ihren Vornamen ein",
+      "lastNamePlaceholder": "Geben Sie Ihren Nachnamen ein",
+      "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
+      "phoneNumberPlaceholder": "Geben Sie Ihre Telefonnummer ein",
+      "careerPlaceholder": "Geben Sie Ihren Beruf ein",
+      "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
+      "confirmPasswordPlaceholder": "Bestätigen Sie Ihr Passwort"
+    },
+    "tabs": {
+      "home": "Startseite",
+      "trips": "Reisen",
+      "routes": "Routen",
+      "account": "Konto"
+    },
+    "account": {
+      "title": "Konto"
+    }
+  }
+}

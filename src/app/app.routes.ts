@@ -9,11 +9,6 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'home',
-    canActivate: [ languageCheckerGuard, authGuard ],
-    loadComponent: () => import('@app_pages/home/home.page').then((m) => m.HomePage),
-  },
-  {
     path: 'login',
     canActivate: [ languageCheckerGuard ],
     loadComponent: () => import('@app_pages/login/login.page').then((m) => m.LoginPage),
@@ -22,5 +17,28 @@ export const routes: Routes = [
     path: 'register',
     canActivate: [ languageCheckerGuard ],
     loadComponent: () => import('./pages/register/register.page').then( m => m.RegisterPage)
+  },
+  {
+    path: '',
+    loadComponent: () => import('./pages/authenticated/authenticated.page').then( m => m.AuthenticatedPage),
+    canActivate: [ authGuard ],
+    children: [
+      {
+        path: 'home',
+        loadComponent: () => import('./pages/home/home.page').then( m => m.HomePage)
+      },
+      {
+        path: 'account',
+        loadComponent: () => import('./pages/account/account.page').then( m => m.AccountPage)
+      },
+      {
+        path: 'trips',
+        loadComponent: () => import('./pages/trips/trips.page').then( m => m.TripsPage)
+      },
+      {
+        path: 'routes',
+        loadComponent: () => import('./pages/routes/routes.page').then( m => m.RoutesPage)
+      },
+    ]
   },
 ];

@@ -1,0 +1,49 @@
+<ion-header [translucent]="false">
+  <ion-toolbar>
+    <ion-title>{{'components.account.title' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  @if(user$ | async; as user) {
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{user.displayName | uppercase}}</ion-card-title>
+      <ion-card-subtitle style="text-transform: lowercase;">{{user.email}}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      @if(user.roles.includes('driver')){
+      <ion-chip color="secondary" outline>
+        <ion-icon name="speedometer-outline"></ion-icon>
+        <ion-label>{{'common.driver' | translate}}</ion-label>
+      </ion-chip>
+      }
+      <ion-chip color="secondary" outline>
+        <ion-icon name="people-circle-outline"></ion-icon>
+        <ion-label>{{'common.passenger' | translate}}</ion-label>
+      </ion-chip>
+    </ion-card-content>
+  </ion-card>
+  }
+
+  <ion-list [inset]="true">
+    <ion-item>
+      <ion-icon slot="start" name="language-outline" size="large"></ion-icon>
+      <ion-label>{{'common.language' | translate}}</ion-label>
+      <ion-select [(ngModel)]="language" (ionChange)="onLanguageSelect()">
+        <ion-select-option value="es">Español</ion-select-option>
+        <ion-select-option value="en">English</ion-select-option>
+        <ion-select-option value="de">Deutsch</ion-select-option>
+        <ion-select-option value="fr">Français</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-icon slot="start" name="moon-outline" size="large"></ion-icon>
+      <ion-label>{{'common.darkMode' | translate}}</ion-label>
+      <ion-toggle slot="end" [(ngModel)]="darkTheme" (ionChange)="onThemeSelect()"></ion-toggle>
+    </ion-item>
+  </ion-list>
+
+  <ion-button color="secondary" class="ion-padding" expand="block" (click)="logout()">Logout</ion-button>
+</ion-content>
