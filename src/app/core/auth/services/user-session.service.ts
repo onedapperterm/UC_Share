@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthCredentials, AuthState, UserSession } from '../model/auth.model';
 import { loginRequest, logout, signUpRequest } from '../store/auth.actions';
-import { Observable, of, switchMap } from 'rxjs';
-import { selectCurrentSession, selectCurrentUserId, } from '../store/auth.selectors';
+import { Observable, map, of, switchMap } from 'rxjs';
+import { selectCurrentRoles, selectCurrentSession, selectCurrentUserId, } from '../store/auth.selectors';
 import { FirestoreDatabaseService } from '@app_services/firestore/firestore-database.service';
 import { DatabaseCollectionName } from 'src/app/model/firestore-database.data';
-import { AppUser, CreateUserDto } from 'src/app/model/user.data';
+import { AppUser, CreateUserDto, Role } from 'src/app/model/user.data';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +34,14 @@ export class UserSessionService {
 
   public getSession(): Observable<UserSession | null> {
     return this._store.select(selectCurrentSession);
+  }
+
+  public getRoles(): Observable<Role[]> {
+    return this._store.select(selectCurrentRoles);
+  }
+
+  public hasRole(role: Role): Observable<boolean> {
+    return this.getRoles().pipe(map(roles => roles.includes(role)));
   }
 
   public getUserId(): Observable<string | null> {

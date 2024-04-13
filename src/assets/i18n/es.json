@@ -39,7 +39,8 @@
       "phoneNumberPlaceholder": "Ingrese su número de teléfono",
       "careerPlaceholder": "Ingrese su carrera",
       "passwordPlaceholder": "Ingrese su contraseña",
-      "confirmPasswordPlaceholder": "Confirme su contraseña"
+      "confirmPasswordPlaceholder": "Confirme su contraseña",
+      "driverRoleHint": "Soy conductor."
     },
     "tabs": {
       "home": "Inicio",

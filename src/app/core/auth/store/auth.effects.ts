@@ -46,7 +46,7 @@ export class AuthEffects {
           roles: res.dto.roles,
           photoURL: null,
         }
-        return AuthActions.saveUserData(user);
+        return AuthActions.saveUserData({userData: user});
       }),
     ),
   );
@@ -54,7 +54,7 @@ export class AuthEffects {
   public saveUserData$ = createEffect(() =>
     this._actions$.pipe(
       ofType(AuthActions.saveUserData),
-      exhaustMap((action) => this._userSessionService.updateUserData(action)),
+      exhaustMap((action) => this._userSessionService.updateUserData(action.userData)),
     ),
     { dispatch: false }
   );

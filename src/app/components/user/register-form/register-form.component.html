@@ -107,12 +107,17 @@
     </span>
   </ion-note>
 
-  <!-- Submit Button -->
-  <ion-button expand="full" color="primary" [disabled]="registerForm.invalid" (click)="onSubmit()">
-    {{ 'components.registerForm.submitButton' | translate }}
-  </ion-button>
 </form>
+<!-- Driver Role -->
+<ion-checkbox [(ngModel)]="isDriverRole" color="primary">
+  {{ 'components.registerForm.driverRoleHint' | translate }}
+</ion-checkbox>
 
-<ion-button expand="full" color="secondary" class="full-width" routerLink="/login">
+<!-- Submit Button -->
+<ion-button expand="block" color="primary" [disabled]="registerForm.invalid" (click)="onSubmit()">
+  {{ 'components.registerForm.submitButton' | translate }}
+</ion-button>
+
+<ion-button expand="block" color="secondary" class="full-width" routerLink="/login">
   {{ 'components.registerForm.toLoginButton' | translate }}
 </ion-button>

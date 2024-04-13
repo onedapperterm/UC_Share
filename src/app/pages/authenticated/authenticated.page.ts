@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { IonRouterOutlet } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
+import { UserSessionService } from '@app_core/auth/services/user-session.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-authenticated',
@@ -20,6 +22,8 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class AuthenticatedPage {
 
-  constructor() { }
+  public isDriver$: Observable<boolean> = this._userSessionService.hasRole('driver');
+
+  constructor(private _userSessionService: UserSessionService) { }
 
 }

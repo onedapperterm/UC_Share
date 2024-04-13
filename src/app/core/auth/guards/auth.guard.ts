@@ -12,6 +12,8 @@ export const authGuard: CanActivateFn = (): Observable<boolean> => {
   const _router: Router = inject(Router)
   const _store: Store = inject(Store<'auth'>)
 
+
+
   return _store
     .select(selectIsLogged)
     .pipe(

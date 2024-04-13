@@ -14,7 +14,7 @@ export const signUpSuccess = createAction(
 
 export const saveUserData = createAction(
   '[Auth] Save User Data',
-  props<AppUser>()
+  props<{userData: AppUser}>()
 );
 
 export const signUpFailure = createAction(

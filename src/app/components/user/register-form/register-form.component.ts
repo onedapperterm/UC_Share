@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, } from '@angular/core';
 import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '@app_core/auth/services/auth.service';
 import { UserSessionService } from '@app_core/auth/services/user-session.service';
 import { CoreModule } from '@app_core/core.module';
 import { IonicModule } from '@ionic/angular';
@@ -32,10 +31,11 @@ export class RegisterFormComponent implements OnInit{
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.required, Validators.pattern(/(\d{10})$/)]],
       career: ['', Validators.required],
-      role: ['passenger', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: [''],
     });
+
+  public isDriverRole: boolean = false;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -53,6 +53,7 @@ export class RegisterFormComponent implements OnInit{
     let data = {
       ...this.registerForm.value,
       displayName: `${this.registerForm.value.firstName} ${this.registerForm.value.lastName}`,
+      roles: this.isDriverRole ? ['driver', 'passenger'] : ['passenger'],
     };
     delete data.confirmPassword;
 
