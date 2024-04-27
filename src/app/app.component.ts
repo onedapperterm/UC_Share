@@ -30,7 +30,7 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit() {
-    this._translateService.use('en');
+    this._translateService.use('es');
     this._store.dispatch(setInitialAuthState({start: true}));
     this._store.select(selectCurrentTheme).pipe(take(1)).subscribe(theme => this._colorThemeService.setTheme(theme));
   }

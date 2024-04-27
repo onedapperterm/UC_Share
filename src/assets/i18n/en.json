@@ -11,7 +11,14 @@
     "darkMode": "Dark Mode",
     "logout": "Logout",
     "driver": "Driver",
-    "passenger": "Passenger"
+    "passenger": "Passenger",
+    "register": "Sign Up",
+    "login": "Login",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "confirm": "Confirm"
   },
   "components": {
     "loginForm": {
@@ -20,7 +27,7 @@
       "emailLabel": "Your e-mail",
       "passwordLabel": "Your password",
       "loginButton": "Let´s go!",
-      "registerButton": "Register",
+      "registerButton": "Sing Up",
       "registerHint": "Are you new? Want to join? Click on Register and request a new account for yourself."
     },
     "registerForm": {
@@ -50,6 +57,21 @@
     },
     "account": {
       "title": "Account"
+    },
+    "routes": {
+      "title": "Routes",
+      "noRoutesHint": "You have no routes yet, add one by clicking the button below",
+      "addRouteButton": "Add Route",
+      "routeForm": {
+        "newTitle": "Add Route",
+        "editTitle": "Edit Route",
+        "fromLabel": "From",
+        "fromPlaceholder": "Enter the starting point",
+        "toLabel": "To",
+        "toPlaceholder": "Enter the destination",
+        "departureLabel": "Departure",
+        "arrivalLabel": "Arrival"
+      }
     }
   }
 }

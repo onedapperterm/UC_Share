@@ -11,7 +11,9 @@
     "darkMode": "Mode Sombre",
     "logout": "Déconnexion",
     "driver": "Conducteur",
-    "passenger": "Passager"
+    "passenger": "Passager",
+    "register": "S'inscrire",
+    "login": "Se connecter"
   },
   "components": {
     "loginForm": {

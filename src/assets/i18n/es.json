@@ -11,7 +11,20 @@
     "darkMode": "Modo Oscuro",
     "logout": "Cerrar sesión",
     "driver": "Conductor",
-    "passenger": "Pasajero"
+    "passenger": "Pasajero",
+    "register": "Registrarse",
+    "login": "Iniciar sesión",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "add": "Agregar",
+    "save": "Guardar",
+    "close": "Cerrar",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "toActive": "Activar",
+    "toInactive": "Desactivar"
   },
   "components": {
     "loginForm": {
@@ -41,6 +54,22 @@
       "passwordPlaceholder": "Ingrese su contraseña",
       "confirmPasswordPlaceholder": "Confirme su contraseña",
       "driverRoleHint": "Soy conductor."
+    },
+    "routeForm": {
+      "newTitle": "Nueva Ruta",
+      "editTitle": "Editar Ruta",
+      "fromLabel": "Desde",
+      "fromPlaceholder": "Lugar de salida",
+      "districtLabel": "Localidad",
+      "districtPlaceholder": "Localidad destino",
+      "neighborhoodLabel": "Hasta",
+      "neighborhoodPlaceholder": "Barrio destino",
+      "checkpointsLabel": "Referencias",
+      "checkpointsHint" : "Describe tu ruta en orden con referencias como calles, estaciones o lugares cercanos por donde pasarás.",
+      "checkpointsFillHint" : "Llena primero tu salida y destino para agregar referencias.",
+      "checkpointPlaceholder": "Calle X, estacion Y, etc...",
+      "commentsLabel": "Comentarios",
+      "commentsPlaceholder": "Comentarios adicionales de la ruta"
     },
     "tabs": {
       "home": "Inicio",

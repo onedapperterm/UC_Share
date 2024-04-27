@@ -30,8 +30,7 @@
   <ion-list [inset]="true">
     <ion-item>
       <ion-icon slot="start" name="language-outline" size="large"></ion-icon>
-      <ion-label>{{'common.language' | translate}}</ion-label>
-      <ion-select [(ngModel)]="language" (ionChange)="onLanguageSelect()">
+      <ion-select [label]="'common.language' | translate" [(ngModel)]="language" (ionChange)="onLanguageSelect()">
         <ion-select-option value="es">Español</ion-select-option>
         <ion-select-option value="en">English</ion-select-option>
         <ion-select-option value="de">Deutsch</ion-select-option>
@@ -39,9 +38,9 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-icon slot="start" name="moon-outline" size="large"></ion-icon>
       <ion-label>{{'common.darkMode' | translate}}</ion-label>
-      <ion-toggle slot="end" [(ngModel)]="darkTheme" (ionChange)="onThemeSelect()"></ion-toggle>
+      <ion-icon slot="start" name="moon-outline" size="large"></ion-icon>
+      <ion-toggle [ariaLabel]="'common.darkMode' | translate" slot="end" [(ngModel)]="darkTheme" (ionChange)="onThemeSelect()"></ion-toggle>
     </ion-item>
   </ion-list>
 

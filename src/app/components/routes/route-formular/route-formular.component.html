@@ -1,0 +1,132 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>{{'components.routeForm.newTitle' | translate}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [color]="theme$ | async">
+  <form [formGroup]="routeForm" novalidate>
+    <ion-list [inset]="true">
+      <!-- FROM INPUT -->
+      <ion-item lines="none">
+        <ion-input
+          formControlName="from"
+          [color]="routeForm.controls.from.invalid && routeForm.controls.from.touched ? 'danger' : ''"
+          labelPlacement="floating"
+          [label]="'components.routeForm.fromLabel' | translate"
+          [placeholder]="'components.routeForm.fromPlaceholder' | translate"
+        ></ion-input>
+      </ion-item>
+
+      <!-- NEIGHBORHOOD INPUT -->
+      <ion-item lines="none">
+        <ion-input
+          formControlName="neighborhood"
+          labelPlacement="floating"
+          [label]="'components.routeForm.neighborhoodLabel' | translate"
+          [placeholder]="'components.routeForm.neighborhoodPlaceholder' | translate"
+        ></ion-input>
+      </ion-item>
+
+      <!-- DISTRICT INPUT -->
+      <ion-item lines="none">
+        <ion-input
+          formControlName="district"
+          labelPlacement="floating"
+          [label]="'components.routeForm.districtLabel' | translate"
+          [placeholder]="'components.routeForm.districtPlaceholder' | translate"
+        ></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-note class="ion-padding-horizontal" color="danger">
+      <ion-text *ngIf="routeForm.invalid
+        && routeForm.controls.from.touched
+        && routeForm.controls.neighborhood.touched
+        && routeForm.controls.district.touched
+        ">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        {{'common.errors.required' | translate}}
+      </ion-text>
+    </ion-note>
+  </form>
+
+  <!-- CHECKPOINTS SECTION -->
+
+  <ion-list [inset]="true">
+    @if(routeForm.controls.from.value && routeForm.controls.neighborhood.value) {
+    <p class="ion-padding-horizontal">
+      <ion-label>{{'components.routeForm.checkpointsLabel' | translate}}</ion-label><br>
+      <ion-text color="medium"><sub>{{'components.routeForm.checkpointsHint' | translate}}</sub></ion-text>
+    </p>
+
+    <div class="route-checkpoints-container">
+      <div class="route-line"></div>
+
+      <div class="checkpoint-container start-point">
+        <div class="checkpoint-indicator">
+          <ion-icon name="radio-button-off-outline"></ion-icon>
+        </div>
+        <div class="route-start-end-label">{{routeForm.controls.from.value}}</div>
+      </div>
+
+      <div class="checkpoint-container" *ngFor="let checkpoint of checkpoints(); let i = index">
+        <div class="checkpoint-indicator">
+          <ion-icon name="radio-button-off-outline"></ion-icon>
+        </div>
+        <ion-input
+          [value]="checkpoint"
+          (ionChange)="updateCheckpoint($event, i)"
+          [placeholder]="'components.routeForm.checkpointPlaceholder' | translate"
+        ></ion-input>
+        <ion-button  fill="clear" (click)="removeCheckpoint(i)">
+          <ion-icon name="remove"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="add-checkpoint-container">
+        <div class="doted-route-line"></div>
+        <ion-button fill="outline" size="small" (click)="addCheckpoint()">
+          {{'common.add' | translate}}
+          <ion-icon name="add" slot="end"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="checkpoint-container end-point">
+        <div class="checkpoint-indicator">
+          <ion-icon name="radio-button-off-outline"></ion-icon>
+        </div>
+        <div class="route-start-end-label">{{routeForm.controls.neighborhood.value}}</div>
+      </div>
+    </div>
+    } @else {
+    <p class="ion-padding-horizontal">
+      <ion-label>{{'components.routeForm.checkpointsLabel' | translate}}</ion-label><br>
+      <ion-text color="medium"><sub>{{'components.routeForm.checkpointsFillHint' | translate}}</sub></ion-text>
+    </p>
+    }
+  </ion-list>
+
+  <!-- DAYS INPUT -->
+
+
+  <!-- COMMENTS INPUT -->
+  <ion-list [inset]="true">
+    <ion-item>
+      <ion-textarea
+        [label]="'components.routeForm.commentsLabel' | translate"
+        labelPlacement="floating"
+        rows="5"
+        [placeholder]="'components.routeForm.commentsPlaceholder' | translate"
+      ></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
+

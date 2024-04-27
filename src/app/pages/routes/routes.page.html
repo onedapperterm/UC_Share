@@ -1,13 +1,22 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>routes</ion-title>
+    <ion-title>{{'components.tabs.routes' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">routes</ion-title>
+      <ion-title size="large">{{'components.tabs.routes' | translate}}</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-text>
+    <p>{{'components.routes.noRoutesHint' | translate}}</p>
+  </ion-text>
+
+  <ion-button expand="block" (click)="openRouteModal()">
+    <ion-icon slot="start" name="add"></ion-icon>
+    {{'components.routes.addRouteButton' | translate}}
+  </ion-button>
 </ion-content>
