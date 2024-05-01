@@ -59,9 +59,9 @@
 
   <!-- CHECKPOINTS SECTION -->
 
-  <ion-list [inset]="true">
+  <ion-list [inset]="true" class="ion-padding-horizontal">
     @if(routeForm.controls.from.value && routeForm.controls.neighborhood.value) {
-    <p class="ion-padding-horizontal">
+    <p>
       <ion-label>{{'components.routeForm.checkpointsLabel' | translate}}</ion-label><br>
       <ion-text color="medium"><sub>{{'components.routeForm.checkpointsHint' | translate}}</sub></ion-text>
     </p>
@@ -106,7 +106,7 @@
       </div>
     </div>
     } @else {
-    <p class="ion-padding-horizontal">
+    <p>
       <ion-label>{{'components.routeForm.checkpointsLabel' | translate}}</ion-label><br>
       <ion-text color="medium"><sub>{{'components.routeForm.checkpointsFillHint' | translate}}</sub></ion-text>
     </p>
@@ -114,6 +114,20 @@
   </ion-list>
 
   <!-- DAYS INPUT -->
+  <ion-list [inset]="true" class="ion-padding-horizontal">
+  @if(routeForm.controls.from.value && routeForm.controls.neighborhood.value) {
+    <p>
+      <ion-label>{{'components.routeForm.daysLabel' | translate}}</ion-label><br>
+      <ion-text color="medium"><sub>{{'components.routeForm.daysHint' | translate}}</sub></ion-text>
+    </p>
+    <app-route-active-days (scheduleChange)="onScheduleChange($event)" (isValidChange)="onScheduleValidChange($event)"></app-route-active-days>
+    } @else {
+    <p class="ion-padding-horizontal">
+      <ion-label>{{'components.routeForm.daysLabel' | translate}}</ion-label><br>
+      <ion-text color="medium"><sub>{{'components.routeForm.daysFillHint' | translate}}</sub></ion-text>
+    </p>
+    }
+  </ion-list>
 
 
   <!-- COMMENTS INPUT -->
@@ -124,9 +138,16 @@
         labelPlacement="floating"
         rows="5"
         [placeholder]="'components.routeForm.commentsPlaceholder' | translate"
+        [(ngModel)]="comments"
       ></ion-textarea>
     </ion-item>
   </ion-list>
 
-</ion-content>
+  <ion-button
+    expand="block"
+    (click)="confirm()"
+  >
+    {{'common.confirm' | translate}}
+  </ion-button>
 
+</ion-content>

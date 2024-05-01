@@ -7,6 +7,15 @@
       "shortPassword": "Demasiado corto, verifique su contraseña",
       "passwordsNotMatch": "Las contraseñas no coinciden"
     },
+    "days" : {
+      "mon": "Lunes",
+      "tue": "Martes",
+      "wed": "Miércoles",
+      "thu": "Jueves",
+      "fri": "Viernes",
+      "sat": "Sábado",
+      "sun": "Domingo"
+    },
     "language": "Idioma",
     "darkMode": "Modo Oscuro",
     "logout": "Cerrar sesión",
@@ -24,7 +33,8 @@
     "active": "Activo",
     "inactive": "Inactivo",
     "toActive": "Activar",
-    "toInactive": "Desactivar"
+    "toInactive": "Desactivar",
+    "confirm": "Confirmar"
   },
   "components": {
     "loginForm": {
@@ -69,7 +79,10 @@
       "checkpointsFillHint" : "Llena primero tu salida y destino para agregar referencias.",
       "checkpointPlaceholder": "Calle X, estacion Y, etc...",
       "commentsLabel": "Comentarios",
-      "commentsPlaceholder": "Comentarios adicionales de la ruta"
+      "commentsPlaceholder": "Comentarios adicionales de la ruta",
+      "daysLabel": "Días Activos",
+      "daysHint": "Selecciona los días de la semana y la hora en los que la ruta está activa",
+      "daysFillHint": "Selecciona primero tu salida y destino para agregar días activos."
     },
     "tabs": {
       "home": "Inicio",

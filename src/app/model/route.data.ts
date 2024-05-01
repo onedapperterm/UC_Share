@@ -1,19 +1,30 @@
-export interface UserRoute {
+export const DAYS_OF_WEEK = {
+  sun: 0,
+  mon: 1,
+  tue: 2,
+  wed: 3,
+  thu: 4,
+  fri: 5,
+  sat: 6,
+};
+
+export type WeekDay = keyof typeof DAYS_OF_WEEK;
+
+export type RouteDaysSchedule = {
+  [key in keyof typeof DAYS_OF_WEEK]?: string;
+};
+
+export interface UserRoute extends RouteDaysSchedule {
   id: string;
   userId: string;
   district: string;
   neighborhood: string;
-  from: DepartureLocation;
+  from: DepartureLocation | string;
   checkpoints: string[];
   status: 'active' | 'inactive';
   comments?: string;
-  sunday?: Date | null;
-  monday?: Date | null;
-  tuesday?: Date | null;
-  wednesday?: Date | null;
-  thursday?: Date | null;
-  friday?: Date | null;
-  saturday?: Date | null;
 }
+
+export interface CreateUserRouteDto extends Omit<UserRoute, 'id'> {}
 
 export type DepartureLocation = 'central' | 'norte' | 'candelaria';

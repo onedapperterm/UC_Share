@@ -1,0 +1,36 @@
+@for(day of schedule() | keyvalue; track $index) {
+<div
+  class="day-container ion-align-items-center ion-justify-content-start"
+  [class.inactive]="!day.value.active"
+>
+  <ion-checkbox
+    [checked]="day.value.active"
+    (ionChange)="toggleDay($event, day.key)"
+  ></ion-checkbox>
+  <ion-label>{{ 'common.days.' + day.key | translate}}</ion-label>
+  @if(day.value.active && selectorHourDay !== day.key) {
+  <ion-button fill="outline" (click)="openModal(day.key)">
+    @if(day.value.hour) {
+    {{day.value.hour | date: 'H:mm'}}
+    } @else {
+    hh:mm
+    }
+  </ion-button>
+  }
+</div>
+@if(selectorHourDay === day.key) {
+<div class="hour-selector-container" [ngClass]="selectorHourDay ? 'show':'hide'">
+  <div class="selector-buttons">
+    <ion-button fill="clear" (click)="cancelHourSelector()">{{'common.cancel' | translate}}</ion-button>
+    <ion-button fill="clear" (click)="confirmHourSelector()">{{'common.confirm' | translate}}</ion-button>
+  </div>
+  <ion-datetime
+    [(ngModel)]="modalHour"
+    display-format="HH:mm"
+    presentation="time"
+  ></ion-datetime>
+</div>
+}
+}
+
+
