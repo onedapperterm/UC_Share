@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, DocumentData } from '@angular/fire/compat/firestore';
+import { AngularFirestore, DocumentData, DocumentReference } from '@angular/fire/compat/firestore';
 import { Observable, from, map } from 'rxjs';
 import { DatabaseDocument } from 'src/app/model/firestore-database.data';
-import { doc, getFirestore, setDoc, getDoc } from 'firebase/firestore';
+import { doc, getFirestore, setDoc, getDoc, collection, collectionData, query } from '@angular/fire/firestore'
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,10 @@ import { doc, getFirestore, setDoc, getDoc } from 'firebase/firestore';
 export class FirestoreDatabaseService {
 
   constructor(private _angularFirestore: AngularFirestore) {}
+
+  public createDocument(collection: string, data: object): Observable<DocumentReference<unknown>> {
+    return from(this._angularFirestore.collection(collection).add(data));
+  }
 
   public setDocument(document: DatabaseDocument<object>):Observable<void> {
     return from(setDoc(doc(getFirestore(), `${document.collection}/${document.id}`), document.data))
@@ -20,4 +24,10 @@ export class FirestoreDatabaseService {
       map(snapshot => snapshot.data())
     )
   }
+
+  public getCollection(collectionName: string, collectionQuery?: any): Observable<any> {
+    const reference = collection(getFirestore(), collectionName);
+    return collectionData(query(reference, collectionQuery), {idField: 'id'});
+  }
+
 }

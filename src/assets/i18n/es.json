@@ -65,6 +65,10 @@
       "confirmPasswordPlaceholder": "Confirme su contraseña",
       "driverRoleHint": "Soy conductor."
     },
+    "routesPage": {
+      "noRoutesHint": "No hay rutas disponibles, ¡agrega una nueva!",
+      "addRouteButton": "Agregar Ruta"
+    },
     "routeForm": {
       "newTitle": "Nueva Ruta",
       "editTitle": "Editar Ruta",
@@ -84,10 +88,17 @@
       "daysHint": "Selecciona los días de la semana y la hora en los que la ruta está activa",
       "daysFillHint": "Selecciona primero tu salida y destino para agregar días activos."
     },
+    "routeDetailsPage" : {
+      "title": "Detalles de la Ruta",
+      "comments": "Comentarios",
+      "noComments": "No hay comentarios de la ruta",
+      "editButton": "Editar Ruta",
+      "deleteButton": "Eliminar Ruta"
+    },
     "tabs": {
       "home": "Inicio",
       "trips": "Viajes",
-      "routes": "Rutas",
+      "routes": "Mis Rutas",
       "account": "Cuenta"
     },
     "account": {

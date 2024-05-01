@@ -1,0 +1,90 @@
+@if(route$ && route$ | async; as route) {
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'components.routeDetailsPage.title' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title size="large">{{'components.routeDetailsPage.title' | translate}}</ion-title>
+      <div class="page-subtitle ion-padding-horizontal">{{route.from}} - {{route.neighborhood}}</div>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="ion-padding">
+    <ion-text>
+      <p>{{'components.routeDetailsPage.comments' | translate}}</p>
+    </ion-text>
+    @if(route.comments) {
+    <ion-text color="medium">
+      <p>{{route.comments}}</p>
+    </ion-text>
+    } @else {
+    <ion-text color="medium">
+      <p>{{'components.routeDetailsPage.noComments' | translate}}</p>
+    </ion-text>
+    }
+  </div>
+
+  <div class="route-container ion-padding-horizontal">
+    <ion-grid>
+      <ion-row class="ion-align-items-cente">
+        <ion-col size="auto">
+          <div class="route-point">
+            <ion-icon name="ellipse-outline"></ion-icon>
+          </div>
+        </ion-col>
+        <ion-col class="route-point-label start-point">
+          {{route.from}}
+        </ion-col>
+      </ion-row>
+      @for(checkpoint of route.checkpoints; track $index) {
+      <ion-row  class="ion-align-items-cente">
+        <ion-col size="auto">
+          <div class="route-point">
+            <ion-icon name="chevron-down-circle-outline"></ion-icon>
+          </div>
+        </ion-col>
+        <ion-col class="route-point-label  checkpoint">
+          {{checkpoint}}
+        </ion-col>
+      </ion-row>
+      }
+      <ion-row  class="ion-align-items-cente">
+        <ion-col size="auto">
+          <div class="route-point">
+            <ion-icon name="radio-button-on-outline"></ion-icon>
+          </div>
+        </ion-col>
+        <ion-col class="route-point-label end-point">
+          {{route.neighborhood}}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button color="danger" fill="outline" expand="block" (click)="deleteRoute(route.id)">
+          {{'components.routeDetailsPage.deleteButton' | translate}}
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="block" (click)="editRoute(route)">
+          {{'components.routeDetailsPage.editButton' | translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
+}

@@ -58,20 +58,28 @@
     "account": {
       "title": "Account"
     },
-    "routes": {
-      "title": "Routes",
+    "routesPage": {
       "noRoutesHint": "You have no routes yet, add one by clicking the button below",
-      "addRouteButton": "Add Route",
-      "routeForm": {
-        "newTitle": "Add Route",
-        "editTitle": "Edit Route",
-        "fromLabel": "From",
-        "fromPlaceholder": "Enter the starting point",
-        "toLabel": "To",
-        "toPlaceholder": "Enter the destination",
-        "departureLabel": "Departure",
-        "arrivalLabel": "Arrival"
-      }
+      "addRouteButton": "Add Route"
+    },
+    "routeForm": {
+      "newTitle": "New Route",
+      "editTitle": "Edit Route",
+      "fromLabel": "From",
+      "fromPlaceholder": "Departure location",
+      "districtLabel": "District",
+      "districtPlaceholder": "Destination district",
+      "neighborhoodLabel": "To",
+      "neighborhoodPlaceholder": "Destination neighborhood",
+      "checkpointsLabel": "Checkpoints",
+      "checkpointsHint" : "Add references to your route",
+      "checkpointsFillHint" : "Select your departure and destination first to add checkpoints.",
+      "checkpointPlaceholder": "Street, avenue, etc.",
+      "commentsLabel": "Comments",
+      "commentsPlaceholder": "Additional information about your route",
+      "daysLabel": "Days",
+      "daysHint": "Select the days the route is active",
+      "daysFillHint": "Select the departure and destination first to select the days"
     }
   }
 }
