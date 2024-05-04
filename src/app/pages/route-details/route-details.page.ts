@@ -43,10 +43,16 @@ export class RouteDetailsPage implements OnInit {
     });
 
     modal.present();
+
+    modal.onDidDismiss().then(() => {
+      this.route$ = this._userRoutesService.getRouteById(route.id);
+    });
   }
 
   public deleteRoute(routeId: string) {
-    console.log('Delete route with id:', routeId);
+    this._userRoutesService.deleteRoute(routeId).subscribe(_ => this._router.navigate(['/routes']));
+
   }
+
 
 }

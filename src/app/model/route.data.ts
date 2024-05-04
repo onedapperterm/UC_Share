@@ -14,7 +14,7 @@ export type RouteDaysSchedule = {
   [key in keyof typeof DAYS_OF_WEEK]?: string;
 };
 
-export interface UserRoute extends RouteDaysSchedule {
+export interface UserRoute {
   id: string;
   userId: string;
   district: string;
@@ -22,6 +22,7 @@ export interface UserRoute extends RouteDaysSchedule {
   from: DepartureLocation | string;
   checkpoints: string[];
   status: 'active' | 'inactive';
+  schedule: RouteDaysSchedule;
   comments?: string;
 }
 

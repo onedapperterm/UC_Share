@@ -28,7 +28,8 @@ import { UserSessionService } from '@app_core/auth/services/user-session.service
 export class RouteFormularComponent implements OnInit {
   @Input() route: UserRoute | undefined;
 
-  private schedule: RouteDaysSchedule = {};
+  public mode: 'create' | 'edit' = 'create';
+  public schedule: RouteDaysSchedule = {};
 
   public theme$: Observable<Theme> = this._colorThemeService.currentTheme();
   public checkpoints: WritableSignal<string[]> = signal<string[]>(['']);
@@ -48,17 +49,19 @@ export class RouteFormularComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.initForm();
+    this.fillForm();
   }
 
-  private initForm(): void {
+  private fillForm(): void {
     if (this.route) {
+      this.mode = 'edit';
       this.routeForm.patchValue({
         from: this.route.from,
         neighborhood: this.route.neighborhood,
         district: this.route.district,
       });
       this.checkpoints.set(this.route.checkpoints);
+      this.schedule = this.route.schedule || {};
       this.comments = this.route.comments || '';
     }
   }
@@ -93,6 +96,11 @@ export class RouteFormularComponent implements OnInit {
   public confirm() {
     if (!this.routeForm.valid) return;
 
+    if (this.mode === 'create') this.createNewRoute();
+    else this.updateRoute();
+  }
+
+  private createNewRoute(): void {
     this._userSessionService.getUserId()
       .pipe(
         take(1),
@@ -106,10 +114,25 @@ export class RouteFormularComponent implements OnInit {
             neighborhood: this.routeForm.value.neighborhood as string,
             district: this.routeForm.value.district as string,
             comments: this.comments,
-            ...this.schedule
+            schedule: this.schedule
           };
           return this._userRoutesService.createRoute(routeDto)
         })
       ).subscribe(_ => this._modalController.dismiss(null, 'confirm'));
+  }
+
+  private updateRoute(): void {
+    if (!this.route) return;
+    const route: UserRoute = {
+      ...this.route,
+      checkpoints: this.checkpoints(),
+      from: this.routeForm.value.from as string,
+      neighborhood: this.routeForm.value.neighborhood as string,
+      district: this.routeForm.value.district as string,
+      comments: this.comments,
+      schedule: this.schedule
+    };
+
+    this._userRoutesService.updateRoute(route).subscribe(_ => this._modalController.dismiss(null, 'confirm'));
   }
 }

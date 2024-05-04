@@ -21,8 +21,14 @@ export class FirestoreDatabaseService {
 
   public getDocument(collection: string, id: string):Observable<DocumentData | undefined> {
     return from(getDoc(doc(getFirestore(), `${collection}/${id}`))).pipe(
-      map(snapshot => snapshot.data())
+      map(snapshot => {
+        return {...snapshot.data(), id: snapshot.id}
+      }),
     )
+  }
+
+  public deleteDocument(collection: string, id: string): Observable<void> {
+    return from(this._angularFirestore.collection(collection).doc(id).delete());
   }
 
   public getCollection(collectionName: string, collectionQuery?: any): Observable<any> {

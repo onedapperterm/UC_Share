@@ -4,6 +4,7 @@ import { UserSessionService } from '@app_core/auth/services/user-session.service
 import { FirestoreDatabaseService } from '@app_services/firestore/firestore-database.service';
 import { where } from 'firebase/firestore';
 import { Observable, filter, switchMap, take } from 'rxjs';
+import { DatabaseCollectionName } from 'src/app/model/firestore-database.data';
 import { CreateUserRouteDto, UserRoute } from 'src/app/model/route.data';
 
 @Injectable({
@@ -11,7 +12,7 @@ import { CreateUserRouteDto, UserRoute } from 'src/app/model/route.data';
 })
 export class UserRoutesService {
 
-  private readonly _collectionName = 'user-routes';
+  private readonly _collectionName: DatabaseCollectionName = 'user-routes';
 
   constructor(
     private _userSessionService: UserSessionService,
@@ -20,6 +21,18 @@ export class UserRoutesService {
 
   public createRoute(route: CreateUserRouteDto): Observable<DocumentReference<any>> {
     return this._firestoreDataServie.createDocument(this._collectionName, route);
+  }
+
+  public updateRoute(route: UserRoute): Observable<void> {
+    return this._firestoreDataServie.setDocument({
+      collection: this._collectionName,
+      id: route.id,
+      data: route
+    });
+  }
+
+  public deleteRoute(routeId: string): Observable<void> {
+    return this._firestoreDataServie.deleteDocument(this._collectionName, routeId);
   }
 
   public getRoutes(): Observable<UserRoute[]> {

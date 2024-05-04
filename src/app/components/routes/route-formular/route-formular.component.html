@@ -120,7 +120,7 @@
       <ion-label>{{'components.routeForm.daysLabel' | translate}}</ion-label><br>
       <ion-text color="medium"><sub>{{'components.routeForm.daysHint' | translate}}</sub></ion-text>
     </p>
-    <app-route-active-days (scheduleChange)="onScheduleChange($event)" (isValidChange)="onScheduleValidChange($event)"></app-route-active-days>
+    <app-route-active-days (scheduleChange)="onScheduleChange($event)" (isValidChange)="onScheduleValidChange($event)" [initialSchedule]="schedule"></app-route-active-days>
     } @else {
     <p class="ion-padding-horizontal">
       <ion-label>{{'components.routeForm.daysLabel' | translate}}</ion-label><br>
