@@ -9,6 +9,8 @@ import { UserRoute } from 'src/app/model/route.data';
 import { TranslateModule } from '@ngx-translate/core';
 import { ModalController } from '@ionic/angular/standalone';
 import { RouteFormularComponent } from '@app_components/routes/route-formular/route-formular.component';
+import { ColorThemeService } from '@app_core/services/ui-theme/color-theme.service';
+import { Theme } from '@app_core/settings/model/core-settings.model';
 
 @Component({
   selector: 'app-route-details',
@@ -20,12 +22,14 @@ import { RouteFormularComponent } from '@app_components/routes/route-formular/ro
 export class RouteDetailsPage implements OnInit {
 
   public route$!: Observable<UserRoute>;
+  public theme$: Observable<Theme> = this._colorThemeService.currentTheme();
 
   constructor(
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
     private _modalController: ModalController,
     private _userRoutesService: UserRoutesService,
+    private _colorThemeService: ColorThemeService,
   ) { }
 
   ngOnInit() {
@@ -34,7 +38,11 @@ export class RouteDetailsPage implements OnInit {
     else this._router.navigate(['/routes']);
   }
 
-  public async editRoute(route: UserRoute) {
+  public activateRoute(routeId: string): void {
+    console.log('activate route', routeId);
+  }
+
+  public async editRoute(route: UserRoute): Promise<void> {
     const modal = await this._modalController.create({
       component: RouteFormularComponent,
       componentProps: {
@@ -49,9 +57,8 @@ export class RouteDetailsPage implements OnInit {
     });
   }
 
-  public deleteRoute(routeId: string) {
+  public deleteRoute(routeId: string): void {
     this._userRoutesService.deleteRoute(routeId).subscribe(_ => this._router.navigate(['/routes']));
-
   }
 
 

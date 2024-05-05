@@ -8,18 +8,10 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button></ion-back-button>
-      </ion-buttons>
-      <ion-title size="large">{{'components.routeDetailsPage.title' | translate}}</ion-title>
-      <div class="page-subtitle ion-padding-horizontal">{{route.from}} - {{route.neighborhood}}</div>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true"  [color]="theme$ | async">
+  <h2 class="ion-padding-horizontal">{{route.from}} - {{route.neighborhood}}</h2>
 
-  <div class="ion-padding">
+  <ion-list [inset]="true" class="ion-padding-horizontal">
     <ion-text>
       <p>{{'components.routeDetailsPage.comments' | translate}}</p>
     </ion-text>
@@ -32,9 +24,10 @@
       <p>{{'components.routeDetailsPage.noComments' | translate}}</p>
     </ion-text>
     }
-  </div>
+  </ion-list>
 
-  <div class="route-container ion-padding-horizontal">
+  <h3 class="ion-padding-horizontal">{{'components.routeForm.checkpointsLabel' | translate }}</h3>
+  <ion-list class="route-container" [inset]="true">
     <ion-grid>
       <ion-row class="ion-align-items-cente">
         <ion-col size="auto">
@@ -69,18 +62,37 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-  </div>
+  </ion-list>
+
+  <h3 class="ion-padding-horizontal">{{'components.routeForm.daysLabel' | translate }}</h3>
+  <ion-list class="ion-padding" [inset]="true">
+    @for(day of route.schedule | keyvalue; track $index) {
+    <ion-item>
+      <ion-label>{{'common.days.' + day.key | translate}}</ion-label>
+      <ion-text slot="end">{{day.value | date: 'H:mm'}}</ion-text>
+    </ion-item>
+    }
+  </ion-list>
 
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-button color="danger" fill="outline" expand="block" (click)="deleteRoute(route.id)">
-          {{'components.routeDetailsPage.deleteButton' | translate}}
+        <ion-button expand="block" (click)="activateRoute(route.id)">
+          {{'common.toActive' | translate}}
         </ion-button>
       </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col>
-        <ion-button expand="block" (click)="editRoute(route)">
+        <ion-button expand="block" fill="outline" (click)="editRoute(route)">
           {{'components.routeDetailsPage.editButton' | translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button color="danger" fill="outline" expand="block" (click)="deleteRoute(route.id)">
+          {{'components.routeDetailsPage.deleteButton' | translate}}
         </ion-button>
       </ion-col>
     </ion-row>

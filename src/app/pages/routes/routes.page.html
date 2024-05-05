@@ -13,12 +13,12 @@
 
   @if (userRoutes$ | async; as routes) {
   @if (routes.length > 0) {
-  <div class="routes-list">
+  <div class="routes-list page-bottom-padding">
     @for(route of routes; track $index) {
     <ion-card [routerLink]="'route-details/' + route.id">
       <ion-card-header>
-        <ion-card-title>{{route.from + ' - ' + route.district}}</ion-card-title>
-        <ion-card-subtitle>{{route.neighborhood}}</ion-card-subtitle>
+        <ion-card-title>{{route.from + ' - ' + route.neighborhood}}</ion-card-title>
+        <ion-card-subtitle>{{route.district}}</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
         <p>{{route.checkpoints.join(' -> ')}}</p>
