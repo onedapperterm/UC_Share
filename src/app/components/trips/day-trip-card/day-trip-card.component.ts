@@ -4,9 +4,11 @@ import { RouterLink } from '@angular/router';
 import { UserSessionService } from '@app_core/auth/services/user-session.service';
 import { UserTripsService } from '@app_services/user-trips/user-trips.service';
 import { IonicModule } from '@ionic/angular';
+import { ModalController } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of, switchMap } from 'rxjs';
 import { UserTrip } from 'src/app/model/trip.data';
+import { TripFormularComponent } from '../trip-formular/trip-formular.component';
 
 @Component({
   selector: 'app-day-trip-card',
@@ -27,6 +29,7 @@ export class DayTripCardComponent implements OnInit {
   public nextTrip$?: Observable<UserTrip | null>;
 
   constructor(
+    private _modalController: ModalController,
     private _userTripsService: UserTripsService,
     private _userSessionService: UserSessionService,
   ) { }
@@ -43,8 +46,24 @@ export class DayTripCardComponent implements OnInit {
     );
   }
 
-  activeTrip(): void {
-    console.log('activeTrip');
+  public async openActiveTripFormular(trip: UserTrip): Promise<void> {
+    const modal = await this._modalController.create({
+      component: TripFormularComponent,
+      componentProps: {
+        trip: trip
+      }
+    });
+
+    modal.present();
+
+    modal.onDidDismiss().then(() => {
+      //update trip
+      console.log('dismissed')
+    });
+  }
+
+  public openCancelTripFormular(): void {
+    console.log('cancelTrip');
   }
 
 }

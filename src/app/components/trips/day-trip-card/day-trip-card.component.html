@@ -37,8 +37,14 @@
 
 
   @if(trip.status === 'pending') {
-  <ion-button expand="block" color="primary" (click)="activeTrip()" class="ion-padding">
+  <ion-button expand="block" color="primary" (click)="openActiveTripFormular(trip)" class="ion-padding">
     Activar y Publicar Viaje
+  </ion-button>
+  }
+
+  @if(trip.status === 'active') {
+  <ion-button expand="block" color="danger" (click)="openCancelTripFormular()" class="ion-padding">
+    Cancelar Viaje
   </ion-button>
   }
 </ion-card>
