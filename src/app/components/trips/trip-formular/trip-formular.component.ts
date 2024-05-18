@@ -9,6 +9,7 @@ import { IonicModule } from '@ionic/angular';
 import { InputCustomEvent, ModalController } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, filter, switchMap, take } from 'rxjs';
+import { validateTrip } from 'src/app/converter/route-trip.converter';
 import { CreateUserTripDto, UserTrip } from 'src/app/model/trip.data';
 
 @Component({
@@ -41,6 +42,8 @@ export class TripFormularComponent  implements OnInit {
     plates: ['', Validators.required],
   });
 
+  public isValidTrip: WritableSignal<boolean> = signal<boolean>(false);
+
   constructor(
     private _formBuilder: FormBuilder,
     private _modalController: ModalController,
@@ -68,6 +71,9 @@ export class TripFormularComponent  implements OnInit {
       this.checkpoints.set(this.trip.checkpoints);
       this.comments = this.trip.comments || '';
     }
+
+    //TODO: fix this shit to validate vetter the f*cking object
+    this.isValidTrip.set(this.tripForm.valid);
   }
 
   public addCheckpoint() {
