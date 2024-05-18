@@ -77,7 +77,7 @@
       <!-- PLATES INPUT -->
       <ion-item lines="none">
         <ion-input
-          formControlName="vehicle"
+          formControlName="plates"
           labelPlacement="floating"
           [label]="'Placas' | translate"
           [placeholder]="'Placas del vehículo' | translate"
@@ -180,6 +180,7 @@
 
   <ion-button
     expand="block"
+    [disabled]="tripForm.invalid"
     (click)="confirm()"
   >
     {{'Actrivar y publicar viaje' | translate}}
