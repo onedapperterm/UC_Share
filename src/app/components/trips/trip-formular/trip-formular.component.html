@@ -1,3 +1,189 @@
-<p>
-  trip-formular works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>Editar y activar viaje</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [color]="theme$ | async">
+  <form [formGroup]="tripForm" novalidate>
+    <ion-list [inset]="true">
+      <!-- FROM INPUT -->
+      <ion-item lines="none">
+        <ion-input
+          formControlName="from"
+          [color]="tripForm.controls.from.invalid && tripForm.controls.from.touched ? 'danger' : ''"
+          labelPlacement="floating"
+          [label]="'Desde'"
+          [placeholder]="'Punto de partida' | translate"
+        ></ion-input>
+      </ion-item>
+
+      <!-- NEIGHBORHOOD INPUT -->
+      <ion-item lines="none">
+        <ion-input
+          formControlName="neighborhood"
+          labelPlacement="floating"
+          [label]="'Hasta' | translate"
+          [placeholder]="'components.tripForm.neighborhoodPlaceholder' | translate"
+        ></ion-input>
+      </ion-item>
+
+      <!-- DISTRICT INPUT -->
+      <ion-item lines="none">
+        <ion-input
+          formControlName="district"
+          labelPlacement="floating"
+          [label]="'Localidad' | translate"
+          [placeholder]="'Localidad de destino' | translate"
+        ></ion-input>
+      </ion-item>
+
+      <!-- SEATS INPUT -->
+      <ion-item lines="none">
+        <ion-input
+          formControlName="seats"
+          labelPlacement="floating"
+          [label]="'Puestos' | translate"
+          [placeholder]="'Total puestos disponibles' | translate"
+        ></ion-input>
+      </ion-item>
+
+      <!-- PRICE INPUT -->
+      <ion-item lines="none">
+        <ion-input
+          formControlName="price"
+          labelPlacement="floating"
+          [label]="'Precio' | translate"
+          [placeholder]="'Precio de viaje' | translate"
+        ></ion-input>
+      </ion-item>
+
+      <!-- VEHICLE INPUT -->
+      <ion-item lines="none">
+        <ion-input
+          formControlName="vehicle"
+          labelPlacement="floating"
+          [label]="'Vehículo' | translate"
+          [placeholder]="'Descripcion del vehículo' | translate"
+        ></ion-input>
+      </ion-item>
+
+      <!-- PLATES INPUT -->
+      <ion-item lines="none">
+        <ion-input
+          formControlName="vehicle"
+          labelPlacement="floating"
+          [label]="'Placas' | translate"
+          [placeholder]="'Placas del vehículo' | translate"
+        ></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+
+    <ion-note class="ion-padding-horizontal" color="danger">
+      <ion-text *ngIf="tripForm.invalid
+        && tripForm.controls.from.touched
+        && tripForm.controls.neighborhood.touched
+        && tripForm.controls.district.touched
+        && tripForm.controls.seats.touched
+        && tripForm.controls.price.touched
+        && tripForm.controls.vehicle.touched
+        && tripForm.controls.plates.touched
+        ">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        {{'common.errors.required' | translate}}
+      </ion-text>
+    </ion-note>
+  </form>
+
+  <!-- CHECKPOINTS SECTION -->
+
+  <ion-list [inset]="true" class="ion-padding-horizontal">
+    @if(tripForm.controls.from.value && tripForm.controls.neighborhood.value) {
+    <p>
+      <ion-label>{{'components.tripForm.checkpointsLabel' | translate}}</ion-label><br>
+      <ion-text color="medium"><sub>{{'components.tripForm.checkpointsHint' | translate}}</sub></ion-text>
+    </p>
+
+    <div class="route-checkpoints-container">
+      <div class="route-line"></div>
+
+      <div class="checkpoint-container start-point">
+        <div class="checkpoint-indicator">
+          <ion-icon name="radio-button-off-outline"></ion-icon>
+        </div>
+        <div class="route-start-end-label">{{tripForm.controls.from.value}}</div>
+      </div>
+
+      <div class="checkpoint-container" *ngFor="let checkpoint of checkpoints(); let i = index">
+        <div class="checkpoint-indicator">
+          <ion-icon name="radio-button-off-outline"></ion-icon>
+        </div>
+        <ion-input
+          [value]="checkpoint"
+          (ionChange)="updateCheckpoint($event, i)"
+          [placeholder]="'components.tripForm.checkpointPlaceholder' | translate"
+        ></ion-input>
+        <ion-button  fill="clear" (click)="removeCheckpoint(i)">
+          <ion-icon name="remove"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="add-checkpoint-container">
+        <div class="doted-route-line"></div>
+        <ion-button fill="outline" size="small" (click)="addCheckpoint()">
+          {{'common.add' | translate}}
+          <ion-icon name="add" slot="end"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="checkpoint-container end-point">
+        <div class="checkpoint-indicator">
+          <ion-icon name="radio-button-off-outline"></ion-icon>
+        </div>
+        <div class="route-start-end-label">{{tripForm.controls.neighborhood.value}}</div>
+      </div>
+    </div>
+    } @else {
+    <p>
+      <ion-label>{{'components.tripForm.checkpointsLabel' | translate}}</ion-label><br>
+      <ion-text color="medium"><sub>{{'components.tripForm.checkpointsFillHint' | translate}}</sub></ion-text>
+    </p>
+    }
+  </ion-list>
+
+  <!-- DEPARTURE TIME INPUT -->
+  <ion-list [inset]="true" class="ion-padding-horizontal">
+   departure time input comes here
+  </ion-list>
+
+
+  <!-- COMMENTS INPUT -->
+  <ion-list [inset]="true">
+    <ion-item>
+      <ion-textarea
+        [label]="'components.routeForm.commentsLabel' | translate"
+        labelPlacement="floating"
+        rows="5"
+        [placeholder]="'components.routeForm.commentsPlaceholder' | translate"
+        [(ngModel)]="comments"
+      ></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <ion-button
+    expand="block"
+    (click)="confirm()"
+  >
+    {{'Actrivar y publicar viaje' | translate}}
+  </ion-button>
+
+</ion-content>
+

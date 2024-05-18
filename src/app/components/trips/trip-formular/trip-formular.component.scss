@@ -1,0 +1,55 @@
+.route-checkpoints-container {
+  position: relative;
+}
+
+.checkpoint-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.75rem;
+
+  .route-start-end-label {
+    width: 100%;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .checkpoint-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    ion-icon {
+      color: var(--ion-item-background, var(--ion-background-color, #fff));
+      background-color: var(--ion-color-primary);
+      border-radius: 50%;
+      z-index: 5;
+    }
+
+  }
+}
+
+
+.add-checkpoint-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .doted-route-line {
+    width: 0px;
+    border-left: 1px dashed var(--ion-item-background, var(--ion-background-color, #fff));
+    height: 60px;
+    position: absolute;
+    left: 7.5px;
+  }
+}
+
+.route-line {
+  width: 1px;
+  height: calc(100% - 60px);
+  background-color: var(--ion-color-primary);
+  position: absolute;
+  left: 7.5px;
+  top: 30px;
+}
