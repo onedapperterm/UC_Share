@@ -11,6 +11,7 @@ import { ModalController } from '@ionic/angular/standalone';
 import { RouteFormularComponent } from '@app_components/routes/route-formular/route-formular.component';
 import { ColorThemeService } from '@app_core/services/ui-theme/color-theme.service';
 import { Theme } from '@app_core/settings/model/core-settings.model';
+import { TripFormularComponent } from '@app_components/trips/trip-formular/trip-formular.component';
 
 @Component({
   selector: 'app-route-details',
@@ -38,8 +39,20 @@ export class RouteDetailsPage implements OnInit {
     else this._router.navigate(['/routes']);
   }
 
-  public activateRoute(routeId: string): void {
-    console.log('activate route', routeId);
+  public async activateRoute(route: UserRoute): Promise<void> {
+    const modal = await this._modalController.create({
+      component: TripFormularComponent,
+      componentProps: {
+        route: route
+      }
+    });
+
+    modal.present();
+
+    modal.onDidDismiss().then(() => {
+      //update trip
+      console.log('dismissed')
+    });
   }
 
   public async editRoute(route: UserRoute): Promise<void> {

@@ -2,34 +2,34 @@
 <ion-card>
   <ion-card-header>
     <ion-card-title>{{trip.from}} -> {{trip.district}}</ion-card-title>
-    <ion-card-subtitle>Próximo Viaje</ion-card-subtitle>
+    <ion-card-subtitle> {{'Próximo Viaje' | translate}} </ion-card-subtitle>
   </ion-card-header>
 
   <ion-card-content>
     <ion-item>
       <ion-label>
-        <strong>Fecha:</strong> {{ trip.date | date: 'dd/MM/yyyy'}}
+        <strong>{{'Fecha' | translate }}:</strong> {{ trip.date | date: 'dd/MM/yyyy'}}
       </ion-label>
     </ion-item>
     <ion-item>
       <ion-label>
-        <strong>Salida:</strong> {{ trip.hour | date: 'HH:mm'}}
+        <strong>{{'Salida' | translate }}:</strong> {{ trip.hour | date: 'HH:mm'}}
       </ion-label>
     </ion-item>
     <ion-item>
       <ion-label>
-        <strong>Estado:</strong> {{ trip.status }}
+        <strong>{{'Estado' | translate }}:</strong> {{ trip.status }}
       </ion-label>
     </ion-item>
     @if(trip.seats) {
     <ion-item>
       <ion-label>
-        <strong>Total Puestos:</strong> {{ trip.seats }}
+        <strong>{{'Total Puestos' | translate }}:</strong> {{ trip.seats }}
       </ion-label>
     </ion-item>
     <ion-item>
       <ion-label>
-        <strong>Libres:</strong> {{ trip.seats - trip.passengersIds.length}}
+        <strong>{{'Libres' | translate }}:</strong> {{ trip.seats - trip.passengersIds.length}}
       </ion-label>
     </ion-item>
     }
@@ -38,14 +38,21 @@
 
   @if(trip.status === 'pending') {
   <ion-button expand="block" color="primary" (click)="openActiveTripFormular(trip)" class="ion-padding">
-    Activar y Publicar Viaje
+    {{'Activar y Publicar Viaje' | translate}}
   </ion-button>
   }
 
   @if(trip.status === 'active') {
-  <ion-button expand="block" color="danger" (click)="openCancelTripFormular()" class="ion-padding">
-    Cancelar Viaje
+  <ion-button expand="block" color="danger" id="delete-sheet" class="ion-padding">
+    {{'Cancelar Viaje' | translate}}
   </ion-button>
+  <ion-action-sheet
+    trigger="delete-sheet"
+    header="Estas Seguro de cancelar?"
+    subHeader="Esta accion no se puede rehacer"
+    [buttons]="deleteButtons"
+    (didDismiss)="onDeleteSheetDismiss($event, trip)"
+  ></ion-action-sheet>
   }
 </ion-card>
 }

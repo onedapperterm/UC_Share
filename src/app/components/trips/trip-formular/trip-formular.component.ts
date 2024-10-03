@@ -10,6 +10,7 @@ import { InputCustomEvent, ModalController } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, filter, switchMap, take } from 'rxjs';
 import { validateTrip } from 'src/app/converter/route-trip.converter';
+import { UserRoute } from 'src/app/model/route.data';
 import { CreateUserTripDto, UserTrip } from 'src/app/model/trip.data';
 
 @Component({
@@ -27,6 +28,7 @@ import { CreateUserTripDto, UserTrip } from 'src/app/model/trip.data';
 })
 export class TripFormularComponent  implements OnInit {
   @Input() trip?: UserTrip;
+  @Input() route?: UserRoute;
 
   public mode: 'create'| 'activate' | 'edit' = 'create';
   public theme$: Observable<Theme> = this._colorThemeService.currentTheme();
@@ -58,22 +60,27 @@ export class TripFormularComponent  implements OnInit {
 
   private fillForm(): void {
     if (this.trip) {
-      this.mode = this.trip.status == 'active' ? 'edit' : 'activate';
-      this.tripForm.patchValue({
-        from: this.trip.from,
-        neighborhood: this.trip.neighborhood,
-        district: this.trip.district,
-        seats: this.trip.seats,
-        price: this.trip.price,
-        vehicle: this.trip.vehicle,
-        plates: this.trip.plates,
-      });
-      this.checkpoints.set(this.trip.checkpoints);
-      this.comments = this.trip.comments || '';
+      this.fillFormFromTrip(this.trip);
+    } else if(this.route) {
+      this.fillFormFromRoute(this.route);
     }
 
-    //TODO: fix this shit to validate vetter the f*cking object
+    //TODO: fix this shit to validate better the f*cking object
     this.isValidTrip.set(this.tripForm.valid);
+  }
+
+  private fillFormFromTrip(trip: UserTrip) {
+    this.mode = trip.status == 'active' ? 'edit' : 'activate';
+    this.tripForm.patchValue(trip);
+    this.checkpoints.set(trip.checkpoints);
+    this.comments = trip.comments || '';
+  }
+
+  private fillFormFromRoute(route: UserRoute) {
+    this.mode = 'activate';
+    this.tripForm.patchValue(route);
+    this.checkpoints.set(route.checkpoints);
+    this.comments = route.comments || '';
   }
 
   public addCheckpoint() {
@@ -99,8 +106,7 @@ export class TripFormularComponent  implements OnInit {
   public confirm() {
     if (!this.tripForm.valid) return;
 
-    if (this.mode === 'create') this.activeAndPublishNewTrip();
-    else if (this.mode === 'activate') this.activeTrip();
+    if (this.mode !== 'edit') this.activeAndPublishNewTrip();
     else this.updateTrip();
   }
 
@@ -129,26 +135,6 @@ export class TripFormularComponent  implements OnInit {
           return this._userTripsService.createAndActiveTrip(tripDto);
         })
       ).subscribe(_ => this._modalController.dismiss(null, 'confirm'));
-  }
-
-  private activeTrip(): void {
-    const tripDto: CreateUserTripDto = {
-      userId: this.trip?.userId as string,
-      status: 'active',
-      checkpoints: this.checkpoints(),
-      from: this.tripForm.value.from as string,
-      neighborhood: this.tripForm.value.neighborhood as string,
-      district: this.tripForm.value.district as string,
-      comments: this.comments,
-      seats: this.tripForm.value.seats as number,
-      price: this.tripForm.value.price as number,
-      vehicle: this.tripForm.value.vehicle as string,
-      plates: this.tripForm.value.plates as string,
-      date: new Date().toISOString(),
-      passengersIds: [],
-      hour: new Date().toISOString(),
-    };
-    this._userTripsService.createAndActiveTrip(tripDto).subscribe(_ => this._modalController.dismiss(null, 'confirm'));
   }
 
   private updateTrip(): void {

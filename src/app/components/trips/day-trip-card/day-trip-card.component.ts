@@ -28,6 +28,23 @@ export class DayTripCardComponent implements OnInit {
   public activeBooking?: Observable<UserTrip | null>;
   public nextTrip$?: Observable<UserTrip | null>;
 
+  public deleteButtons = [
+    {
+      text: 'Delete',
+      role: 'destructive',
+      data: {
+        action: 'delete',
+      },
+    },
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      },
+    },
+  ]
+
   constructor(
     private _modalController: ModalController,
     private _userTripsService: UserTripsService,
@@ -62,8 +79,9 @@ export class DayTripCardComponent implements OnInit {
     });
   }
 
-  public openCancelTripFormular(): void {
-    console.log('cancelTrip');
+  public onDeleteSheetDismiss($event: any, trip: UserTrip): void {
+    console.log($event)
+    // this._userTripsService.cancelTrip(trip)
   }
 
 }

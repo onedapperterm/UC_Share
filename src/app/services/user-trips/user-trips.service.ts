@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { UserSessionService } from '@app_core/auth/services/user-session.service';
 import { FirestoreDatabaseService } from '@app_services/firestore/firestore-database.service';
 import { UserRoutesService } from '@app_services/user-routes/user-routes.service';
+import { ActionSheetController } from '@ionic/angular/standalone';
 import { where } from 'firebase/firestore';
-import { Observable, filter, map, switchMap, take } from 'rxjs';
+import { Observable, filter, map, switchMap, take, tap } from 'rxjs';
 import { getNearestTripFromRoutes } from 'src/app/converter/route-trip.converter';
 import { DatabaseCollectionName } from 'src/app/model/firestore-database.data';
 import { CreateUserTripDto, UserTrip } from 'src/app/model/trip.data';
@@ -68,8 +69,19 @@ export class UserTripsService {
       take(1),
       filter(userId => !!userId),
       switchMap(userId => this.getDriverTripsByUserId(userId as string)),
-      map(trips => trips.filter(trip => trip.status === 'active')[0] || null)
+      map(trips => trips.filter(trip => trip.status === 'active')[0] || null),
+      tap(trip => this.validateTrip(trip))
     );
+  }
+
+  private validateTrip(trip: UserTrip | null): void {
+    if(!trip) return;
+
+    //TODO: validate date and hour
+  }
+
+  public cancelTrip(trip: UserTrip):void {
+    this.updateTrip({...trip, ...{status: 'canceled'}}).subscribe(res => console.log(res))
   }
 
   public getPassegerActiveTrip(): Observable<UserTrip | null> {
