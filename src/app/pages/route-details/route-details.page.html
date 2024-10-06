@@ -75,6 +75,7 @@
   </ion-list>
 
   <ion-grid>
+    @if(!(disableTripActivation$ | async)) {
     <ion-row>
       <ion-col>
         <ion-button expand="block" (click)="activateRoute(route)">
@@ -82,6 +83,7 @@
         </ion-button>
       </ion-col>
     </ion-row>
+    }
     <ion-row>
       <ion-col>
         <ion-button expand="block" fill="outline" (click)="editRoute(route)">

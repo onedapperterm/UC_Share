@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { UserRoutesService } from '@app_services/user-routes/user-routes.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { UserRoute } from 'src/app/model/route.data';
 import { TranslateModule } from '@ngx-translate/core';
 import { ModalController } from '@ionic/angular/standalone';
@@ -12,6 +12,7 @@ import { RouteFormularComponent } from '@app_components/routes/route-formular/ro
 import { ColorThemeService } from '@app_core/services/ui-theme/color-theme.service';
 import { Theme } from '@app_core/settings/model/core-settings.model';
 import { TripFormularComponent } from '@app_components/trips/trip-formular/trip-formular.component';
+import { UserTripsService } from '@app_services/user-trips/user-trips.service';
 
 @Component({
   selector: 'app-route-details',
@@ -24,11 +25,15 @@ export class RouteDetailsPage implements OnInit {
 
   public route$!: Observable<UserRoute>;
   public theme$: Observable<Theme> = this._colorThemeService.currentTheme();
+  public disableTripActivation$: Observable<boolean> = this._userTripsService
+    .getDriverActiveTrip()
+    .pipe(map(trip => !!trip))
 
   constructor(
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
     private _modalController: ModalController,
+    private _userTripsService: UserTripsService,
     private _userRoutesService: UserRoutesService,
     private _colorThemeService: ColorThemeService,
   ) { }
@@ -50,8 +55,7 @@ export class RouteDetailsPage implements OnInit {
     modal.present();
 
     modal.onDidDismiss().then(() => {
-      //update trip
-      console.log('dismissed')
+      this._router.navigate(['/trips']);
     });
   }
 

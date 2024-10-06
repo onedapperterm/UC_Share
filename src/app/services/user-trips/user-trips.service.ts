@@ -3,11 +3,11 @@ import { UserSessionService } from '@app_core/auth/services/user-session.service
 import { FirestoreDatabaseService } from '@app_services/firestore/firestore-database.service';
 import { UserRoutesService } from '@app_services/user-routes/user-routes.service';
 import { ToastController } from '@ionic/angular';
-import { where } from 'firebase/firestore';
+import { limit, where } from 'firebase/firestore';
 import { Observable, filter, map, switchMap, take, tap } from 'rxjs';
 import { getNearestTripFromRoutes } from 'src/app/converter/route-trip.converter';
 import { DatabaseCollectionName } from 'src/app/model/firestore-database.data';
-import { CreateUserTripDto, UserTrip } from 'src/app/model/trip.data';
+import { CreateUserTripDto, TripStatus, UserTrip } from 'src/app/model/trip.data';
 
 @Injectable({
   providedIn: 'root'
@@ -44,8 +44,18 @@ export class UserTripsService {
     );
   }
 
-  public getDriverTripsByUserId(userId: string): Observable<UserTrip[]> {
-    return this._firestoreDataServie.getCollection(this._collectionName, where('userId', '==', userId));
+  public getDriverTripsByUserId(userId: string, max: number = 10, statusFilter?: TripStatus): Observable<UserTrip[]> {
+    const constraints = [
+      where('userId', '==', userId),
+      limit(max),
+    ]
+
+    if(statusFilter) constraints.push(where('status', '!=', statusFilter));
+
+    return this._firestoreDataServie.getCollection(
+      this._collectionName,
+      ...constraints
+    );
   }
 
   public getTripById(tripId: string): Observable<any | undefined> {
@@ -78,7 +88,7 @@ export class UserTripsService {
   private validateTrip(trip: UserTrip | null): void {
     if(!trip) return;
 
-    //TODO: validate date and hour
+    //TODO: validate date and hour and update status accordingly
   }
 
   public cancelTrip(trip: UserTrip):void {

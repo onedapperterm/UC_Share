@@ -13,5 +13,32 @@
 
   @if(isDriver$ | async) {
   <app-day-trip-card></app-day-trip-card>
+
+  <h2>Historial de Viajes</h2>
+  <ion-accordion-group [multiple]="true">
+    @for(trip of trips$ | async; track trip.id) {
+    <ion-accordion [value]="trip.id">
+      <ion-item slot="header">
+        <ion-label>{{trip.date | date: 'dd/MM/YYYY'}} - {{trip.status}}</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <ion-grid>
+          <ion-row>
+            <ion-col class="ion-align-self-start"><h4>{{trip.from}} -> {{trip.neighborhood}}</h4></ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>{{trip.vehicle}}</ion-col>
+            <ion-col>{{trip.plates}}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-align-self-start">{{trip.hour | date: 'HH:mm'}}</ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ion-accordion>
+    }
+  </ion-accordion-group>
   }
+
+
 </ion-content>

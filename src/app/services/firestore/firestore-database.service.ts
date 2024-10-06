@@ -31,9 +31,9 @@ export class FirestoreDatabaseService {
     return from(this._angularFirestore.collection(collection).doc(id).delete());
   }
 
-  public getCollection(collectionName: string, collectionQuery?: any): Observable<any> {
+  public getCollection(collectionName: string, ...queryConstraints: any[]): Observable<any> {
     const reference = collection(getFirestore(), collectionName);
-    return collectionData(query(reference, collectionQuery), {idField: 'id'});
+    return collectionData(query(reference, ...queryConstraints), {idField: 'id'});
   }
 
 }

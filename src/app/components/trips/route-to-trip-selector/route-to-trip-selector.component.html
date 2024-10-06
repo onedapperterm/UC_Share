@@ -15,9 +15,17 @@
   <ion-list  [inset]="true">
   @if(routes$ | async; as routes) {
     <ion-radio-group [compareWith]="compareWith" (ionChange)="handleChange($event)">
-      <ion-item *ngFor="let route of routes;">
+      @for(route of routes; track route.id) {
+      <ion-item>
         <ion-radio [value]="route">{{ route.from + ' -> ' + route.neighborhood }}</ion-radio>
       </ion-item>
+      } @empty {
+      <ion-item>
+        <ion-note color="medium" class="ion-margin-horizontal">
+          {{'Aun no tienes rutas creadas'}}
+        </ion-note>
+      </ion-item>
+      }
     </ion-radio-group>
     } @else {
     <ion-item>

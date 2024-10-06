@@ -91,7 +91,11 @@ export class DayTripCardComponent implements OnInit {
 
     modal.present();
 
-    modal.onDidDismiss().then(event => this.openActiveTripFormular(undefined, event.data));
+    modal.onDidDismiss().then(event => {
+      if(event.role === 'confirm' && event.data) {
+        this.openActiveTripFormular(undefined, event.data)
+      }
+    });
   }
 
   public onCreateSheetDismiss($event: any):void {
