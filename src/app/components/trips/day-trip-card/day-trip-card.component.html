@@ -21,6 +21,7 @@
         <strong>{{'Estado' | translate }}:</strong> {{ trip.status }}
       </ion-label>
     </ion-item>
+
     @if(trip.seats) {
     <ion-item>
       <ion-label>
@@ -49,10 +50,28 @@
   <ion-action-sheet
     trigger="delete-sheet"
     header="Estas Seguro de cancelar?"
-    subHeader="Esta accion no se puede rehacer"
-    [buttons]="deleteButtons"
+    [buttons]="cancelButtons"
     (didDismiss)="onDeleteSheetDismiss($event, trip)"
   ></ion-action-sheet>
   }
 </ion-card>
+
+} @else {
+<ion-list [inset]="true">
+  <ion-item>
+    <ion-note color="medium" class="ion-margin-horizontal">
+      {{'No tienes viajes programados para hoy' | translate}}
+    </ion-note>
+  </ion-item>
+</ion-list>
+
+<ion-button id="create-sheet" expand="block" color="primary" class="ion-padding">
+  {{'Nuevo viaje' | translate}}
+</ion-button>
+<ion-action-sheet
+  trigger="create-sheet"
+  header="Activar nuevo viaje"
+  [buttons]="createButtons"
+  (didDismiss)="onCreateSheetDismiss($event)"
+></ion-action-sheet>
 }

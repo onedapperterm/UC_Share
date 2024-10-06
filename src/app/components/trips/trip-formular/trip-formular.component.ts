@@ -9,7 +9,6 @@ import { IonicModule } from '@ionic/angular';
 import { InputCustomEvent, ModalController } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, filter, switchMap, take } from 'rxjs';
-import { validateTrip } from 'src/app/converter/route-trip.converter';
 import { UserRoute } from 'src/app/model/route.data';
 import { CreateUserTripDto, UserTrip } from 'src/app/model/trip.data';
 
@@ -43,7 +42,8 @@ export class TripFormularComponent  implements OnInit {
     vehicle: ['', Validators.required],
     plates: ['', Validators.required],
   });
-
+  public hourSelectorValue: string = new Date().toISOString();
+  public now = new Date();
   public isValidTrip: WritableSignal<boolean> = signal<boolean>(false);
 
   constructor(
@@ -98,7 +98,6 @@ export class TripFormularComponent  implements OnInit {
     this.checkpoints.set(current);
   }
 
-
   public cancel() {
     return this._modalController.dismiss(null, 'cancel');
   }
@@ -130,7 +129,7 @@ export class TripFormularComponent  implements OnInit {
             plates: this.tripForm.value.plates as string,
             date: new Date().toISOString(),
             passengersIds: [],
-            hour: new Date().toISOString(),
+            hour: this.hourSelectorValue
           };
           return this._userTripsService.createAndActiveTrip(tripDto);
         })

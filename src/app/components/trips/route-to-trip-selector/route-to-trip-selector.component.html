@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>Editar y activar viaje</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true" [disabled]="!selectedRoute">Confirm</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [color]="theme$ | async">
+  <ion-list  [inset]="true">
+  @if(routes$ | async; as routes) {
+    <ion-radio-group [compareWith]="compareWith" (ionChange)="handleChange($event)">
+      <ion-item *ngFor="let route of routes;">
+        <ion-radio [value]="route">{{ route.from + ' -> ' + route.neighborhood }}</ion-radio>
+      </ion-item>
+    </ion-radio-group>
+    } @else {
+    <ion-item>
+      <ion-note color="medium" class="ion-margin-horizontal">
+        {{'Aun no tienes rutas creadas'}}
+      </ion-note>
+    </ion-item>
+    }
+  </ion-list>
+</ion-content>

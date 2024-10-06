@@ -11,5 +11,7 @@
     </ion-toolbar>
   </ion-header>
 
+  @if(isDriver$ | async) {
   <app-day-trip-card></app-day-trip-card>
+  }
 </ion-content>

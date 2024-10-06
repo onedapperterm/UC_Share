@@ -40,6 +40,10 @@ export class UserSessionService {
     return this._store.select(selectCurrentRoles);
   }
 
+  public isDriver(): Observable<boolean> {
+    return this.getRoles().pipe(map(roles => roles?.includes('driver')));
+  }
+
   public hasRole(role: Role): Observable<boolean> {
     return this.getRoles().pipe(map(roles => roles.includes(role)));
   }

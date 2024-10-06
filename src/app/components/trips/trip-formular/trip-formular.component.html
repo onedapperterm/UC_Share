@@ -153,15 +153,26 @@
     </div>
     } @else {
     <p>
-      <ion-label>{{'components.tripForm.checkpointsLabel' | translate}}</ion-label><br>
-      <ion-text color="medium"><sub>{{'components.tripForm.checkpointsFillHint' | translate}}</sub></ion-text>
+      <ion-label>{{'components.routeForm.checkpointsLabel' | translate}}</ion-label><br>
+      <ion-text color="medium"><sub>{{'components.routeForm.checkpointsFillHint' | translate}}</sub></ion-text>
     </p>
     }
   </ion-list>
 
   <!-- DEPARTURE TIME INPUT -->
-  <ion-list [inset]="true" class="ion-padding-horizontal">
-   departure time input comes here
+  <ion-list  [inset]="true">
+    <ion-item>
+      Hora de Salida
+      <ion-list [inset]="true" class="ion-padding-horizontal">
+        <ion-datetime
+          [(ngModel)]="hourSelectorValue"
+          display-format="HH:mm"
+          presentation="time"
+          hourCycle="h23"
+          locale="en-US"
+        ></ion-datetime>
+      </ion-list>
+    </ion-item>
   </ion-list>
 
 

@@ -9,6 +9,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of, switchMap } from 'rxjs';
 import { UserTrip } from 'src/app/model/trip.data';
 import { TripFormularComponent } from '../trip-formular/trip-formular.component';
+import { RouteToTripSelectorComponent } from '../route-to-trip-selector/route-to-trip-selector.component';
+import { UserRoute } from 'src/app/model/route.data';
 
 @Component({
   selector: 'app-day-trip-card',
@@ -27,21 +29,28 @@ export class DayTripCardComponent implements OnInit {
 
   public activeBooking?: Observable<UserTrip | null>;
   public nextTrip$?: Observable<UserTrip | null>;
-
-  public deleteButtons = [
+  public createButtons = [
     {
-      text: 'Delete',
-      role: 'destructive',
-      data: {
-        action: 'delete',
-      },
+      text: 'Crear desde Ruta',
+      role: 'fromRoute',
     },
     {
-      text: 'Cancel',
+      text: 'Crear nuevo Viaje',
+      role: 'newTrip',
+    },
+    {
+      text: 'Mejor no',
       role: 'cancel',
-      data: {
-        action: 'cancel',
-      },
+    },
+  ]
+  public cancelButtons = [
+    {
+      text: 'Cancelar Viaje',
+      role: 'confirm',
+    },
+    {
+      text: 'Mejor no',
+      role: 'cancel',
     },
   ]
 
@@ -52,8 +61,8 @@ export class DayTripCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.nextTrip$ = this._userSessionService.getRoles().pipe(
-      switchMap(roles => roles.includes('driver') ? this.getNextTrip(): of(null)),
+    this.nextTrip$ = this._userSessionService.isDriver().pipe(
+      switchMap(isDriver => isDriver ? this.getNextTrip(): of(null)),
     );
   }
 
@@ -63,25 +72,42 @@ export class DayTripCardComponent implements OnInit {
     );
   }
 
-  public async openActiveTripFormular(trip: UserTrip): Promise<void> {
+  public async openActiveTripFormular(trip?: UserTrip, route?: UserRoute): Promise<void> {
     const modal = await this._modalController.create({
       component: TripFormularComponent,
       componentProps: {
-        trip: trip
+        trip: trip,
+        route: route
       }
     });
 
     modal.present();
+  }
 
-    modal.onDidDismiss().then(() => {
-      //update trip
-      console.log('dismissed')
+  private async openRouteSlector(): Promise<void> {
+    const modal = await this._modalController.create({
+      component: RouteToTripSelectorComponent,
     });
+
+    modal.present();
+
+    modal.onDidDismiss().then(event => this.openActiveTripFormular(undefined, event.data));
+  }
+
+  public onCreateSheetDismiss($event: any):void {
+    if($event.detail.role === 'fromRoute') {
+      this.openRouteSlector();
+    }
+
+    if($event.detail.role === 'newTrip') {
+      this.openActiveTripFormular();
+    }
   }
 
   public onDeleteSheetDismiss($event: any, trip: UserTrip): void {
-    console.log($event)
-    // this._userTripsService.cancelTrip(trip)
+    if($event.detail.role === 'confirm') {
+      this._userTripsService.cancelTrip(trip)
+    }
   }
 
 }

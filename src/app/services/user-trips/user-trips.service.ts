@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UserSessionService } from '@app_core/auth/services/user-session.service';
 import { FirestoreDatabaseService } from '@app_services/firestore/firestore-database.service';
 import { UserRoutesService } from '@app_services/user-routes/user-routes.service';
-import { ActionSheetController } from '@ionic/angular/standalone';
+import { ToastController } from '@ionic/angular';
 import { where } from 'firebase/firestore';
 import { Observable, filter, map, switchMap, take, tap } from 'rxjs';
 import { getNearestTripFromRoutes } from 'src/app/converter/route-trip.converter';
@@ -17,6 +17,7 @@ export class UserTripsService {
   private readonly _collectionName: DatabaseCollectionName = 'user-trips';
 
   constructor(
+    private _toastController: ToastController,
     private _userRoutesService: UserRoutesService,
     private _userSessionService: UserSessionService,
     private _firestoreDataServie: FirestoreDatabaseService,
@@ -81,7 +82,18 @@ export class UserTripsService {
   }
 
   public cancelTrip(trip: UserTrip):void {
-    this.updateTrip({...trip, ...{status: 'canceled'}}).subscribe(res => console.log(res))
+    this.updateTrip({...trip, ...{status: 'canceled'}})
+      .subscribe(_ => this.presentToast('Viaje cancelado'))
+  }
+
+  private async presentToast(message: string) {
+    const toast = await this._toastController.create({
+      message: message,
+      duration: 1500,
+      position: 'top',
+    });
+
+    await toast.present();
   }
 
   public getPassegerActiveTrip(): Observable<UserTrip | null> {

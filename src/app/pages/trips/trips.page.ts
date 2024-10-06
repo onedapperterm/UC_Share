@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular'
 import { TranslateModule } from '@ngx-translate/core'
 import { RouterLink } from '@angular/router'
 import { DayTripCardComponent } from '@app_components/trips/day-trip-card/day-trip-card.component'
+import { UserSessionService } from '@app_core/auth/services/user-session.service'
+import { Observable } from 'rxjs'
 
 @Component({
   selector: 'app-trips',
@@ -21,5 +23,11 @@ import { DayTripCardComponent } from '@app_components/trips/day-trip-card/day-tr
   ],
 })
 export class TripsPage {
-  constructor() {}
+
+  public isDriver$: Observable<boolean> = this._userSessionService.isDriver();
+
+  constructor(
+    private _userSessionService: UserSessionService,
+  ) {}
+
 }
