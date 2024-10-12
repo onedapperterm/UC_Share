@@ -1,12 +1,44 @@
 @if (user$ | async; as user) {
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{'components.tabs.trips' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="medium">
-        Moin {{ user.displayName }}
+        Dashboard
       </ion-title>
     </ion-toolbar>
   </ion-header>
 
+  <ion-list  class="ion-padding">
+    <ion-list-header>
+      <ion-label>
+        Viajes disponibles
+      </ion-label>
+    </ion-list-header>
+
+    @for(trip of (availableTrips$ | async); track trip.id) {
+    <ion-item [routerLink]="'/booking/' + trip.id">
+      <ion-chip color="secondary" outline slot="end">
+        <ion-label>{{trip.seats - trip.passengersIds.length}}</ion-label>
+        <ion-icon name="body"></ion-icon>
+      </ion-chip>
+      <ion-label>
+        <h2>{{trip.neighborhood + ' (' + trip.district + ')'}}</h2>
+        <h3>{{'salida desde:' | translate}} {{trip.from}}</h3>
+        <h3>{{trip.hour | date: 'hh:mm'}}</h3>
+        <p>{{trip.comments}}</p>
+      </ion-label>
+    </ion-item>
+    } @empty {
+    <p>
+      {{'No hay viajes disponibles' | translate}}
+    </p>
+    }
+  </ion-list>
 </ion-content>
 }

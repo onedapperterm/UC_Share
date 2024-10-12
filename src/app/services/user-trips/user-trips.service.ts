@@ -4,7 +4,7 @@ import { FirestoreDatabaseService } from '@app_services/firestore/firestore-data
 import { UserRoutesService } from '@app_services/user-routes/user-routes.service';
 import { ToastController } from '@ionic/angular';
 import { limit, where } from 'firebase/firestore';
-import { Observable, filter, map, switchMap, take, tap } from 'rxjs';
+import { Observable, filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { getNearestTripFromRoutes } from 'src/app/converter/route-trip.converter';
 import { DatabaseCollectionName } from 'src/app/model/firestore-database.data';
 import { CreateUserTripDto, TripStatus, UserTrip } from 'src/app/model/trip.data';
@@ -62,8 +62,24 @@ export class UserTripsService {
     return this._firestoreDataServie.getDocument(this._collectionName, tripId);
   }
 
-  public getAllAvailableActiveTrips(): Observable<UserTrip[]> {
-    return this._firestoreDataServie.getCollection(this._collectionName, where('status', '==', 'active'))
+  public getAvailableTrips(max?: number):Observable<UserTrip[]> {
+    return this._userSessionService.getUserId().pipe(
+      take(1),
+      filter(userId => !!userId),
+      switchMap(userId => this.getAllAvailableActiveTrips(max)
+        .pipe(
+          map(trips => trips.filter(trip => trip.userId !== userId))
+        )),
+    )
+  }
+
+  private getAllAvailableActiveTrips(max: number = 30): Observable<UserTrip[]> {
+    return this._firestoreDataServie
+      .getCollection(
+        this._collectionName,
+        where('status', '==', 'active'),
+        limit(max)
+      )
       .pipe(
         map(trips => trips.filter((trip: UserTrip) => trip.seats > trip.passengersIds.length))
       );
