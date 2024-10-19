@@ -1,6 +1,5 @@
 import { Component } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { FormsModule } from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
 import { TranslateModule } from '@ngx-translate/core'
 import { RouterLink } from '@angular/router'
@@ -18,7 +17,6 @@ import { UserTrip } from 'src/app/model/trip.data'
   imports: [
     IonicModule,
     CommonModule,
-    FormsModule,
     TranslateModule,
     DayTripCardComponent,
     RouterLink,

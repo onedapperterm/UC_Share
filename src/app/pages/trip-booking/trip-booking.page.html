@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>trip-booking</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'Reserva' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,6 +15,92 @@
   </ion-header>
 
   @if(trip$ | async; as trip) {
+  <ion-list>
+    <ion-item  lines="none" class="ion-align-center">
+      <ion-label>
+        <h1>{{trip.neighborhood + ' (' + trip.district + ')'}}</h1>
+        <p>{{'desde:' | translate}} {{trip.from}}</p>
+        <ion-text color="primary">
+          <h1>${{trip.price}}</h1>
+        </ion-text>
+      </ion-label>
+      <ion-chip outline>
+        <h3  class="hour-label">
+          {{trip.hour | date: 'HH:mm'}}
+        </h3>
+      </ion-chip>
+    </ion-item>
+  </ion-list>
 
+  <h3 class="ion-padding-horizontal">{{'components.routeForm.checkpointsLabel' | translate }}</h3>
+  <ion-list class="trip-container" [inset]="true">
+    <app-trip-checkpoints
+      [neighborhood]="trip.neighborhood"
+      [from]="trip.from"
+      [checkpoints]="trip.checkpoints"
+    >
+    </app-trip-checkpoints>
+  </ion-list>
+
+  <h3 class="ion-padding-horizontal">{{'Vehiculo' | translate }}</h3>
+  <ion-list>
+    <ion-item lines="none">
+      <ion-avatar slot="start">
+        <img src="/assets/avatar.svg" />
+      </ion-avatar>
+      <ion-label>
+        <h1> {{trip.vehicle}} </h1>
+        @if(driver$ | async; as driver) {
+        <p>{{driver.displayName}}</p>
+        }
+      </ion-label>
+      <ion-chip outline>{{trip.plates}}</ion-chip>
+    </ion-item>
+  </ion-list>
+
+  <h3 class="ion-padding-horizontal"> {{'Comentarios' | translate}} </h3>
+  <ion-list>
+    <ion-item lines="none">
+      @if(trip.comments) {
+      <p>{{trip.comments}}</p>
+      } @else {
+      <p>{{'No hay notas para este viaje' | translate}}</p>
+      }
+    </ion-item>
+  </ion-list>
+
+  <h3 class="ion-padding-horizontal"> {{'Puestos:' | translate}} </h3>
+  <ion-list>
+    <ion-item lines="none">
+      <ion-button size="large" (click)="onRemove()" [disabled]="!(selectedSeats > 0)">
+        <ion-icon name="remove-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-label class="seats-container">
+        <h1>{{selectedSeats}}</h1>
+        <p>${{selectedSeats * trip.price}}</p>
+      </ion-label>
+      <ion-button size="large" (click)="onAdd()" [disabled]="!(selectedSeats < (trip.seats - trip.passengersIds.length))">
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-button
+    class="ion-text-wrap ion-padding-horizontal"
+    expand="block" color="primary"
+    [disabled]="!(selectedSeats > 0)"
+    (click)="onConfirm(trip)"
+  >
+    {{'common.confirm' | translate}}
+  </ion-button>
+  <ion-button
+    class="ion-text-wrap ion-padding-horizontal"
+    expand="block"
+    color="danger"
+    fill="outline"
+    routerLink="/"
+  >
+    {{'common.cancel' | translate}}
+  </ion-button>
   }
 </ion-content>
