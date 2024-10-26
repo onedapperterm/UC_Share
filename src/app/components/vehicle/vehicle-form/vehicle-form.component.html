@@ -1,44 +1,70 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Registro de Vehículos</ion-title>
-  </ion-toolbar>
-</ion-header>
+<!-- <form (ngSubmit)="onSubmit()" #vehicleForm="ngForm"> -->
+<form [formGroup]="vehicleForm" novalidate>
 
-<ion-content>
-  <form (ngSubmit)="onSubmit()" #vehicleForm="ngForm">
-    <ion-item>
-      <ion-label position="floating">Marca</ion-label>
-      <ion-input type="text" name="marca" ngModel required></ion-input>
-    </ion-item>
+  <ion-input [label]="'Marca'"
+      label-placement="stacked"
+      fill="outline"
+      formControlName="brand"
+      [placeholder]="'KIA, Renault, Toyota'"
+      [errorText]="vehicleForm.controls.brand.hasError('required') &&
+      vehicleForm.controls.brand.touched ?
+      'Campo Requerido' : ''"
+  >
+  </ion-input>
 
-    <ion-item>
-      <ion-label position="floating">Modelo</ion-label>
-      <ion-input type="text" name="modelo" ngModel required></ion-input>
-    </ion-item>
+  <ion-input [label]="'modelo'"
+    label-placement="stacked"
+    fill="outline"
+    formControlName="carModel"
+    [placeholder]="'Rio, Logan, Prado'"
+    [errorText]="vehicleForm.controls.carModel.hasError('required') &&
+    vehicleForm.controls.carModel.touched ?
+    'Campo Requerido' : ''"
+  >
+  </ion-input>
+ 
+  <ion-input [label]="'Color'"
+    label-placement="stacked"
+    fill="outline"
+    formControlName="color"
+    [placeholder]="'Negro, Plateado'"
+    [errorText]="vehicleForm.controls.color.hasError('required') &&
+    vehicleForm.controls.color.touched ?
+    'Campo Requerido' : ''"
+  >
+  </ion-input>
+ 
+  <ion-input [label]="'Placa'"
+    label-placement="stacked"
+    fill="outline"
+    formControlName="plates"
+    [placeholder]="'AAA000'"
+    [errorText]="vehicleForm.controls.plates.hasError('required') &&
+    vehicleForm.controls.plates.touched ?
+    'Campo Requerido' : ''"
+  >
+  </ion-input>
 
-    <ion-item>
-      <ion-label position="floating">Color</ion-label>
-      <ion-input type="text" name="color" ngModel required></ion-input>
-    </ion-item>
+  <ion-select [label]="'Tipo de Vehículo'"
+    label-placement="stacked"
+    fill="outline"
+    formControlName="vehicleType"
+    [placeholder]="'Carro o Moto'"
+    >
+      <ion-select-option value="carro">Carro</ion-select-option>
+      <ion-select-option value="moto">Moto</ion-select-option>
+  </ion-select>
 
-    <ion-item>
-      <ion-label position="floating">Placa</ion-label>
-      <ion-input type="text" name="placa" ngModel required></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Tipo de Vehículo</ion-label>
-      <ion-select name="tipoVehiculo" ngModel required>
-        <ion-select-option value="carro">Carro</ion-select-option>
-        <ion-select-option value="moto">Moto</ion-select-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Número de Puestos</ion-label>
-      <ion-input type="number" name="numeroPuestos" ngModel required></ion-input>
-    </ion-item>
-
-    <!-- <ion-button expand="full" type="submit" [disabled]="!vehicleForm.valid">Registrar</ion-button> -->
-  </form>
-</ion-content>
+  <ion-input [label]="'Cupos'"
+    label-placement="stacked"
+    fill="outline"
+    formControlName="seats"
+    [placeholder]="'2'"
+    [errorText]="vehicleForm.controls.seats.hasError('required') &&
+    vehicleForm.controls.seats.touched ?
+    'Campo Requerido' : ''"
+  >
+  </ion-input>
+  
+  <ion-button expand="full" type="submit" [disabled]="!vehicleForm.valid">Registrar</ion-button>
+</form>

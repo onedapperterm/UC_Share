@@ -25,11 +25,29 @@ import { mailOutline, lockClosedOutline } from 'ionicons/icons';
 })
 export class VehicleFormComponent  implements OnInit {
 
-  constructor() { }
+  public vehicleForm = this._formBuilder.group({
+    brand: ['', Validators.required],
+    plates: ['', [Validators.required, Validators.pattern(/([A-Z]{3}\d{3}|[A-Z]{3}\d{2}[A-Z])/)]],
+    carModel: ['', Validators.required],
+    color: ['', Validators.required],
+    vehicleType: ['', Validators.required],
+    seats: ['', [Validators.required, Validators.pattern(/(\d{1})$/)]]
+  });
+
+  constructor(
+    private _formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {}
 
   onSubmit(){
-    
+    // let data = {
+    //   ...this.registerForm.value,
+    //   displayName: `${this.registerForm.value.firstName} ${this.registerForm.value.lastName}`,
+    //   roles: this.isDriverRole ? ['driver', 'passenger'] : ['passenger'],
+    // };
+    // delete data.confirmPassword;
+
+    // this._userSessionService.signUp(data as CreateUserDto);
   }
 }
