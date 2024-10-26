@@ -1,0 +1,12 @@
+@if(trip$ | async; as trip) {
+<ion-item>
+  <ion-chip color="secondary" outline slot="end">
+    <ion-label>{{booking.status}}</ion-label>
+  </ion-chip>
+  <ion-label>
+    <h2>{{trip.neighborhood + ' (' + trip.district + ')'}}</h2>
+    <h3>{{'desde:' | translate}} {{trip.from}}</h3>
+    <h3>{{trip.date | date: 'dd/mm/YYYY'}}</h3>
+  </ion-label>
+</ion-item>
+}

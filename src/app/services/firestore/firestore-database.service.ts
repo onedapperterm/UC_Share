@@ -11,26 +11,41 @@ export class FirestoreDatabaseService {
 
   constructor(private _angularFirestore: AngularFirestore) {}
 
-  public createDocument(collection: string, data: object): Observable<DocumentReference<unknown>> {
+  /**
+   * creates a document
+   */
+  public createDocument<T extends object= object>(collection: string, data: T): Observable<DocumentReference<unknown>> {
     return from(this._angularFirestore.collection(collection).add(data));
   }
 
-  public setDocument(document: DatabaseDocument<object>):Observable<void> {
+  /**
+   * Updates a document
+   */
+  public setDocument<T extends object = object>(document: DatabaseDocument<T>):Observable<void> {
     return from(setDoc(doc(getFirestore(), `${document.collection}/${document.id}`), document.data))
   }
 
-  public getDocument(collection: string, id: string):Observable<DocumentData | undefined> {
+  /**
+   * Gets a document by id
+   */
+  public getDocument<T = DocumentData>(collection: string, id: string):Observable<T | null> {
     return from(getDoc(doc(getFirestore(), `${collection}/${id}`))).pipe(
       map(snapshot => {
-        return {...snapshot.data(), id: snapshot.id}
+        return snapshot && snapshot.data() ? {...snapshot.data(), id: snapshot.id} as T : null;
       }),
     )
   }
 
+  /**
+   * Deletes a document by id
+   */
   public deleteDocument(collection: string, id: string): Observable<void> {
     return from(this._angularFirestore.collection(collection).doc(id).delete());
   }
 
+  /**
+  * Gets the documents of a collection
+  */
   public getCollection(collectionName: string, ...queryConstraints: any[]): Observable<any> {
     const reference = collection(getFirestore(), collectionName);
     return collectionData(query(reference, ...queryConstraints), {idField: 'id'});
