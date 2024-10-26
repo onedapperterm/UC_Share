@@ -1,4 +1,4 @@
-export type DatabaseCollectionName = 'users' | 'user-routes' | 'user-trips';
+export type DatabaseCollectionName = 'users' | 'user-routes' | 'user-trips' | 'bookings';
 
 export interface DatabaseDocument<T> {
   collection: DatabaseCollectionName;
