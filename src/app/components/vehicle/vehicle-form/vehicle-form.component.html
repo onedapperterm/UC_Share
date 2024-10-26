@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro de Vehículos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="onSubmit()" #vehicleForm="ngForm">
+    <ion-item>
+      <ion-label position="floating">Marca</ion-label>
+      <ion-input type="text" name="marca" ngModel required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Modelo</ion-label>
+      <ion-input type="text" name="modelo" ngModel required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Color</ion-label>
+      <ion-input type="text" name="color" ngModel required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Placa</ion-label>
+      <ion-input type="text" name="placa" ngModel required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Tipo de Vehículo</ion-label>
+      <ion-select name="tipoVehiculo" ngModel required>
+        <ion-select-option value="carro">Carro</ion-select-option>
+        <ion-select-option value="moto">Moto</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Número de Puestos</ion-label>
+      <ion-input type="number" name="numeroPuestos" ngModel required></ion-input>
+    </ion-item>
+
+    <!-- <ion-button expand="full" type="submit" [disabled]="!vehicleForm.valid">Registrar</ion-button> -->
+  </form>
+</ion-content>

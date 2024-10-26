@@ -47,6 +47,10 @@ export const routes: Routes = [
         path: 'booking/:id',
         loadComponent: () => import('./pages/trip-booking/trip-booking.page').then( m => m.TripBookingPage)
       },
+      {
+        path: 'vehicles',
+        loadComponent: () => import('./pages/vehicles/vehicles.page').then( m => m.VehiclesPage)
+      }
     ]
   },
   {

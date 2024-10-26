@@ -23,6 +23,9 @@
         <ion-icon name="people-circle-outline"></ion-icon>
         <ion-label>{{'common.passenger' | translate}}</ion-label>
       </ion-chip>
+      @if(user.roles.includes('driver')){
+        <ion-button color="primary" class="ion-padding" expand="block" routerLink="/vehicles">Registrar Vehiculo</ion-button>
+      }
     </ion-card-content>
   </ion-card>
   }
