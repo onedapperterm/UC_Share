@@ -7,11 +7,11 @@
         <ion-icon name="home-outline"></ion-icon>
         {{'components.tabs.home' | translate}}
       </ion-tab-button>
+      @if(isDriver$ | async) {
       <ion-tab-button tab="trips">
         <ion-icon name="car-sport-outline"></ion-icon>
         {{'components.tabs.trips' | translate}}
       </ion-tab-button>
-      @if(isDriver$ | async) {
       <ion-tab-button tab="routes">
         <ion-icon name="analytics-outline"></ion-icon>
         {{'components.tabs.routes' | translate}}

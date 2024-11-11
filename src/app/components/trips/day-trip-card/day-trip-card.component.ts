@@ -53,6 +53,16 @@ export class DayTripCardComponent implements OnInit {
       role: 'cancel',
     },
   ]
+  public completeButtons = [
+    {
+      text: 'Completar',
+      role: 'confirm',
+    },
+    {
+      text: 'Aún no',
+      role: 'cancel',
+    },
+  ]
 
   constructor(
     private _modalController: ModalController,
@@ -110,7 +120,13 @@ export class DayTripCardComponent implements OnInit {
 
   public onDeleteSheetDismiss($event: any, trip: UserTrip): void {
     if($event.detail.role === 'confirm') {
-      this._userTripsService.cancelTrip(trip)
+      this._userTripsService.cancelTrip(trip.id)
+    }
+  }
+
+  public onCompleteSheetDismiss($event: any, trip: UserTrip): void {
+    if($event.detail.role === 'confirm') {
+      this._userTripsService.completeTrip(trip.id)
     }
   }
 
