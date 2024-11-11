@@ -1,39 +1,45 @@
 @if(nextTrip$ | async; as trip) {
 <ion-card>
   <ion-card-header>
-    <ion-card-title>{{trip.from}} -> {{trip.district}}</ion-card-title>
-    <ion-card-subtitle> {{'Próximo Viaje' | translate}} </ion-card-subtitle>
+    <ion-card-subtitle> {{'Según tus rutas' | translate}} </ion-card-subtitle>
+    <ion-card-title>{{ 'Próximo Viaje' | translate }}</ion-card-title>
   </ion-card-header>
 
   <ion-card-content>
-    <ion-item>
-      <ion-label>
-        <strong>{{'Fecha' | translate }}:</strong> {{ trip.date | date: 'dd/MM/yyyy'}}
-      </ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>
-        <strong>{{'Salida' | translate }}:</strong> {{ trip.hour | date: 'HH:mm'}}
-      </ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>
-        <strong>{{'Estado' | translate }}:</strong> {{ trip.status }}
-      </ion-label>
-    </ion-item>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-icon name="car" slot="start"></ion-icon>
+        <ion-label>
+          <h2>{{trip.from}} - {{trip.district}}</h2>
+          <p>{{'Ruta' | translate}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="calendar" slot="start"></ion-icon>
+        <ion-label>
+          <h2>{{ trip.date | date: 'dd/MM/yyyy'}}</h2>
+          <p>{{'Fecha' | translate }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="time" slot="start"></ion-icon>
+        <ion-label>
+          <h2>{{ trip.hour | date: 'HH:mm'}}</h2>
+          <p>{{'Salida' | translate }}</p>
+        </ion-label>
+      </ion-item>
 
-    @if(trip.seats) {
-    <ion-item>
-      <ion-label>
-        <strong>{{'Total Puestos' | translate }}:</strong> {{ trip.seats }}
-      </ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>
-        <strong>{{'Libres' | translate }}:</strong> {{ trip.seats - trip.passengersIds.length}}
-      </ion-label>
-    </ion-item>
-    }
+      @if(trip.seats) {
+      <ion-item>
+        <ion-icon name="person" slot="start"></ion-icon>
+        <ion-label>
+          <h2>{{ trip.seats - trip.passengersIds.length}} / {{ trip.seats }}</h2>
+          <p>{{'Puestos libres' | translate }}</p>
+        </ion-label>
+      </ion-item>
+      }
+    </ion-list>
+
   </ion-card-content>
 
 
@@ -44,6 +50,16 @@
   }
 
   @if(trip.status === 'active') {
+  <ion-button expand="block" color="primary" id="complete-sheet" class="ion-padding">
+    {{'Completar Viaje' | translate}}
+  </ion-button>
+  <ion-action-sheet
+    trigger="complete-sheet"
+    header="Has completado el viaje?"
+    [buttons]="completeButtons"
+    (didDismiss)="onCompleteSheetDismiss($event, trip)"
+  ></ion-action-sheet>
+
   <ion-button expand="block" color="danger" id="delete-sheet" class="ion-padding">
     {{'Cancelar Viaje' | translate}}
   </ion-button>

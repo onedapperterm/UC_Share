@@ -1,0 +1,52 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-subtitle> {{'Llega puntual!' | translate}} </ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-icon name="car" slot="start"></ion-icon>
+        <ion-label>
+          <h2>{{booking.trip.from}} - {{booking.trip.district}}</h2>
+          <p>{{'Ruta' | translate}}</p>
+        </ion-label>
+        <!-- TODO: Continue here showing the checkpoints -->
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="time" slot="start"></ion-icon>
+        <ion-label>
+          <h2>{{ booking.trip.hour | date: 'HH:mm'}}</h2>
+          <p>{{'Salida' | translate }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="person" slot="start"></ion-icon>
+        <ion-label>
+          <h2>{{ bookedSeats }}</h2>
+          <p>{{'Puestos reservados' | translate }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="cash" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Total ${{ booking.trip.price * bookedSeats }}</h2>
+          <p>{{'Precio por puesto' | translate }} ${{ booking.trip.price }}</p>
+        </ion-label>
+      </ion-item>
+      @if(booking.trip.comments) {
+      <ion-item>
+        <ion-label>
+          <h2>{{'Ten en cuenta' | translate}}: </h2>
+          <p>{{ booking.trip.comments }}</p>
+        </ion-label>
+      </ion-item>
+      }
+    </ion-list>
+
+    <ion-button expand="block" color="danger" (click)="cancelBooking(booking.details)">
+      {{ 'Cancelar reserva' | translate }}
+    </ion-button>
+  </ion-card-content>
+</ion-card>

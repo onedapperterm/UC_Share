@@ -1,6 +1,7 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { BookingCardComponent } from '@app_components/bookings/booking-card/booking-card.component';
 import { BookingItemComponent } from '@app_components/bookings/booking-item/booking-item.component';
 import { UserSession } from '@app_core/auth/model/auth.model';
 import { UserSessionService } from '@app_core/auth/services/user-session.service';
@@ -22,7 +23,8 @@ import { UserTrip } from 'src/app/model/trip.data';
     DatePipe,
     TranslateModule,
     RouterLink,
-    BookingItemComponent
+    BookingItemComponent,
+    BookingCardComponent
   ],
 })
 export class HomePage {
@@ -39,7 +41,4 @@ export class HomePage {
     private _userTripsService: UserTripsService,
   ) {}
 
-  public cancelBooking(booking: TripBooking):void {
-    this._userTripsService.cancelBooking(booking);
-  }
 }

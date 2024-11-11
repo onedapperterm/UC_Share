@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { UserSessionService } from '@app_core/auth/services/user-session.service';
 import { BookingService } from '@app_services/booking/booking.service';
@@ -6,7 +7,7 @@ import { FirestoreDatabaseService } from '@app_services/firestore/firestore-data
 import { UserRoutesService } from '@app_services/user-routes/user-routes.service';
 import { ToastController } from '@ionic/angular';
 import { limit, where } from 'firebase/firestore';
-import { Observable, filter, forkJoin, map, of, switchMap, take, tap } from 'rxjs';
+import { Observable, filter, forkJoin, from, map, of, switchMap, take, tap } from 'rxjs';
 import { getNearestTripFromRoutes } from 'src/app/converter/route-trip.converter';
 import { DetailedTripBooking, TripBooking } from 'src/app/model/booking.data';
 import { DatabaseCollectionName } from 'src/app/model/firestore-database.data';
@@ -17,7 +18,8 @@ import { CreateUserTripDto, TripStatus, UserTrip } from 'src/app/model/trip.data
 })
 export class UserTripsService {
 
-  private readonly _collectionName: DatabaseCollectionName = 'user-trips';
+  private readonly _tripsCollection: DatabaseCollectionName = 'user-trips';
+  private readonly _bookingsCollection: DatabaseCollectionName = 'bookings';
 
   constructor(
     private _toastController: ToastController,
@@ -25,18 +27,19 @@ export class UserTripsService {
     private _userSessionService: UserSessionService,
     private _firestoreDataServie: FirestoreDatabaseService,
     private _bookingService: BookingService,
-    private _router: Router
+    private _router: Router,
+    private _angularFirestore: AngularFirestore
   ) { }
 
   //---------- DRIVER OPERATIONS --------------
 
   public createAndActiveTrip(trip: CreateUserTripDto): Observable<any>  {
-    return this._firestoreDataServie.createDocument(this._collectionName, trip);
+    return this._firestoreDataServie.createDocument(this._tripsCollection, trip);
   }
 
   public updateTrip(trip: UserTrip): Observable<void> {
     return this._firestoreDataServie.setDocument<UserTrip>({
-      collection: this._collectionName,
+      collection: this._tripsCollection,
       id: trip.id,
       data: trip
     });
@@ -60,13 +63,13 @@ export class UserTripsService {
     if(statusFilter) constraints.push(where('status', '!=', statusFilter));
 
     return this._firestoreDataServie.getCollection(
-      this._collectionName,
+      this._tripsCollection,
       ...constraints
     );
   }
 
   public getTripById(tripId: string): Observable<UserTrip | null> {
-    return this._firestoreDataServie.getDocument<UserTrip>(this._collectionName, tripId);
+    return this._firestoreDataServie.getDocument<UserTrip>(this._tripsCollection, tripId);
   }
 
   public getAvailableTrips(max?: number):Observable<UserTrip[]> {
@@ -83,7 +86,7 @@ export class UserTripsService {
   private getAllAvailableActiveTrips(max: number = 30): Observable<UserTrip[]> {
     return this._firestoreDataServie
       .getCollection(
-        this._collectionName,
+        this._tripsCollection,
         where('status', '==', 'active'),
         limit(max)
       )
@@ -108,10 +111,68 @@ export class UserTripsService {
     );
   }
 
-  public cancelTrip(trip: UserTrip):void {
-    this.updateTrip({...trip, ...{status: 'canceled'}})
-      //TODO: Continue here: Update bookings accordingly
-      .subscribe(_ => this.presentToast('Viaje cancelado'))
+  public cancelTrip(tripId: string):Observable<any> {
+    const tripRef = this._angularFirestore.collection(this._tripsCollection).doc(tripId)
+    const bookingsRef = this._angularFirestore.collection<TripBooking>(
+      this._bookingsCollection,
+      ref => ref.where('tripId', '==', tripId)
+    );
+
+    return from(this._angularFirestore.firestore.runTransaction(async (transaction) => {
+
+      const bookingsSnapshot = await bookingsRef.ref.get();
+
+      const tripSnapshot = await transaction.get(tripRef.ref);
+
+      if (!tripSnapshot.exists) {
+        throw new Error('Trip not found');
+      }
+
+      transaction.update(tripRef.ref, { status: 'canceled', });
+
+      bookingsSnapshot.docs.forEach(doc => {
+        transaction.update(doc.ref, {
+          status: 'canceled-by-driver'
+        });
+      });
+
+      return {
+        success: true,
+        updatedBookings: bookingsSnapshot.size
+      };
+    }));
+  }
+
+  public completeTrip(tripId: string):Observable<any> {
+    const tripRef = this._angularFirestore.collection(this._tripsCollection).doc(tripId)
+    const bookingsRef = this._angularFirestore.collection<TripBooking>(
+      this._bookingsCollection,
+      ref => ref.where('tripId', '==', tripId)
+    );
+
+    return from(this._angularFirestore.firestore.runTransaction(async (transaction) => {
+
+      const bookingsSnapshot = await bookingsRef.ref.get();
+
+      const tripSnapshot = await transaction.get(tripRef.ref);
+
+      if (!tripSnapshot.exists) {
+        throw new Error('Trip not found');
+      }
+
+      transaction.update(tripRef.ref, { status: 'completed', });
+
+      bookingsSnapshot.docs.forEach(doc => {
+        transaction.update(doc.ref, {
+          status: 'completed'
+        });
+      });
+
+      return {
+        success: true,
+        updatedBookings: bookingsSnapshot.size
+      };
+    }));
   }
 
   //---------- PASSENGER OPERATIONS --------------
@@ -165,8 +226,8 @@ export class UserTripsService {
     const updatedBooking: TripBooking = {...booking, ...{status: 'canceled-by-passenger'}}
 
     this.getTripById(booking.tripId).pipe(
-      filter(trip => !!trip),
-      map(trip => this.removePassengerFromTrip(trip as UserTrip, booking.passengerId)),
+      filter((trip): trip is UserTrip => !!trip),
+      map(trip => this.removePassengerFromTrip(trip, booking.passengerId)),
       switchMap(trip => forkJoin([
         this.updateTrip(trip),
         this._bookingService.updateBooking(updatedBooking)
@@ -180,8 +241,8 @@ export class UserTripsService {
   public getUserBookings(): Observable<TripBooking[]> {
     return this._userSessionService.getUserId().pipe(
       take(1),
-      filter(userId => !!userId),
-      switchMap(userId => this._bookingService.getBookingsByUserId(userId as string))
+      filter((userId): userId is string => !!userId),
+      switchMap(userId => this._bookingService.getBookingsByUserId(userId))
     );
   }
 

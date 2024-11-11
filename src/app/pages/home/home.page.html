@@ -22,21 +22,7 @@
       </ion-label>
     </ion-list-header>
 
-    <ion-item lines="none">
-      <ion-chip color="secondary" outline slot="end">
-        <ion-label>${{booking.trip.price}}</ion-label>
-      </ion-chip>
-      <ion-label>
-        <h2>{{booking.trip.neighborhood + ' (' + booking.trip.district + ')'}}</h2>
-        <h3>{{'salida desde:' | translate}} {{booking.trip.from}}</h3>
-        <h3>{{booking.trip.hour | date: 'hh:mm'}}</h3>
-        <p><strong>{{'Comentarios' | translate}}:</strong> {{booking.trip.comments}}</p>
-      </ion-label>
-    </ion-item>
-
-    <ion-button expand="block" color="primary" (click)="cancelBooking(booking.details)">
-      {{ 'Cancelar reserva' | translate }}
-    </ion-button>
+    <app-booking-card [booking]="booking"></app-booking-card>
   </ion-list>
   } @else if(activeTrip$ | async ) {
   <ion-list class="ion-padding">
@@ -45,6 +31,8 @@
         Tienes un viaje activo
       </ion-label>
     </ion-list-header>
+
+    <!-- TODO: Continue here  as well showing the active trip card -->
 
   </ion-list>
   } @else {
