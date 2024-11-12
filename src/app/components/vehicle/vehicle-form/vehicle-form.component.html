@@ -1,16 +1,24 @@
 <!-- <form (ngSubmit)="onSubmit()" #vehicleForm="ngForm"> -->
 <form [formGroup]="vehicleForm" novalidate>
 
-  <ion-input [label]="'Marca'"
-      label-placement="stacked"
-      fill="outline"
-      formControlName="brand"
-      [placeholder]="'KIA, Renault, Toyota'"
-      [errorText]="vehicleForm.controls.brand.hasError('required') &&
-      vehicleForm.controls.brand.touched ?
-      'Campo Requerido' : ''"
+<ion-select [label]="'Tipo de Vehículo'"
+  label-placement="stacked"
+  fill="outline"
+  formControlName="vehicleType"
+  [placeholder]="'Carro o Moto'"
   >
-  </ion-input>
+    <ion-select-option *ngFor="let type of vehiclesTypes" [value]="type">{{ type }}</ion-select-option>
+</ion-select>
+
+<ion-select [label]="'Marca'"
+  label-placement="stacked"
+  fill="outline"
+  formControlName="brand"
+  [placeholder]="'Seleccione Marca'"
+  >
+    <ion-select-option *ngFor="let brand of brands" [value]="brand">{{ brand }}</ion-select-option>
+ </ion-select>
+
 
   <ion-input [label]="'modelo'"
     label-placement="stacked"
@@ -37,23 +45,17 @@
   <ion-input [label]="'Placa'"
     label-placement="stacked"
     fill="outline"
+    (focusout)="onFocusoutPlate()"
     formControlName="plates"
     [placeholder]="'AAA000'"
-    [errorText]="vehicleForm.controls.plates.hasError('required') &&
-    vehicleForm.controls.plates.touched ?
-    'Campo Requerido' : ''"
+    [errorText]="vehicleForm.controls.plates.touched? 
+    (vehicleForm.controls.plates.hasError('required')? 'Campo Requerido': 
+    (vehicleForm.controls.plates.hasError('placaInvalida')?'Placa No Valida':''))
+     : ''"
+
+
   >
   </ion-input>
-
-  <ion-select [label]="'Tipo de Vehículo'"
-    label-placement="stacked"
-    fill="outline"
-    formControlName="vehicleType"
-    [placeholder]="'Carro o Moto'"
-    >
-      <ion-select-option value="carro">Carro</ion-select-option>
-      <ion-select-option value="moto">Moto</ion-select-option>
-  </ion-select>
 
   <ion-input [label]="'Cupos'"
     label-placement="stacked"
@@ -66,5 +68,5 @@
   >
   </ion-input>
   
-  <ion-button expand="full" type="submit" [disabled]="!vehicleForm.valid">Registrar</ion-button>
+  <ion-button expand="full" (click)="confirm()" [disabled]="!vehicleForm.valid">Registrar</ion-button>
 </form>
