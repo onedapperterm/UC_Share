@@ -4,10 +4,62 @@
       <ion-buttons slot="start">
         <ion-back-button defaultHref="/"></ion-back-button>
       </ion-buttons>
-      <ion-title>Registro Vehiculos</ion-title>
+      <ion-title>{{'Registro Vehiculos' | translate}}</ion-title>
     </ion-toolbar>
   </ion-header>
-  
-  <app-vehicle-form></app-vehicle-form>
+
+  <ion-content>
+
+    @for(vehicle of vehicles$ | async; track vehicle.id) {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ vehicle.plates }}
+          <ion-chip color="primary" outline>
+
+            <ion-icon *ngIf="vehicle.vehicleType === 'carro'" name="car-sport-outline"></ion-icon>
+            <ion-icon *ngIf="vehicle.vehicleType === 'moto'" name="bicycle-outline"></ion-icon>
+            <ion-label>{{ vehicle.vehicleType }}</ion-label>
+          </ion-chip>
+        </ion-card-title>
+        <ion-card-subtitle>{{ vehicle.brand }} {{ vehicle.carModel }}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-chip color="secondary" outline>
+          <ion-icon name="people-outline"></ion-icon>
+          <ion-label>{{ vehicle.seats }} Puestos</ion-label>
+        </ion-chip>
+        <ion-chip color="secondary" outline>
+          <ion-icon name="color-fill-outline"></ion-icon>
+          <ion-label>{{ vehicle.color }}</ion-label>
+        </ion-chip>
+      </ion-card-content>
+      <ion-button fill="clear" color="danger" [id]="'delete-sheet-' + vehicle.id">Eliminar</ion-button>
+      <ion-action-sheet
+        [trigger]="'delete-sheet-' + vehicle.id"
+        header="Estas Seguro de remover este vehiculo?"
+        [buttons]="deleteButtons"
+        (didDismiss)="onDeleteSheetDismiss($event, vehicle)"
+      ></ion-action-sheet>
+      <ion-button fill="clear" color="primary" (click)="openVehicleModal(vehicle)">Modificar</ion-button>
+    </ion-card>
+    } @empty {
+    <ion-card color="medium">
+      <ion-card-header>
+        <ion-card-subtitle>No tiene Vehiculos Registrados!</ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+    }
+
+    <ion-button
+      class="ion-text-wrap ion-padding-horizontal"
+      expand="block"
+      color="primary"
+      (click)="openVehicleModal()"
+    >
+      {{'common.add' | translate}}
+    </ion-button>
+
+  </ion-content>
 </ion-content>
 

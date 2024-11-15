@@ -23,17 +23,14 @@
         <ion-icon name="people-circle-outline"></ion-icon>
         <ion-label>{{'common.passenger' | translate}}</ion-label>
       </ion-chip>
-      @if(user.roles.includes('driver')){
+      @if(user.roles.includes('driver')) {
         <ion-button color="primary" class="ion-padding" expand="block" routerLink="/vehicles">
           <ion-icon name="car-sport-outline"></ion-icon>
-          <ion-label style="margin-left: 5px;">Registrar Vehiculo</ion-label>
+          <ion-label style="margin-left: 5px;">Administrar Vehiculos</ion-label>
         </ion-button>
       }
     </ion-card-content>
   </ion-card>
-    @if(user.roles.includes('driver')){
-      <app-vehicle-list></app-vehicle-list>
-    }
   }
 
   <ion-list [inset]="true">

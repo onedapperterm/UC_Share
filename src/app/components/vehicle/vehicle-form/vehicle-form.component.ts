@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CoreModule } from '@app_core/core.module';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserSessionService } from '@app_core/auth/services/user-session.service';
-import { filter, switchMap, take } from 'rxjs';
-import { CreateVehicleDto } from 'src/app/model/vehicle.data';
+import { Observable, Subscription, filter, switchMap, take } from 'rxjs';
+import { CreateVehicleDto, Vehicle, VehicleType } from 'src/app/model/vehicle.data';
 import { VehiclesService } from '@app_services/vehicles/vehicles.service';
-
+import { Theme } from '@app_core/settings/model/core-settings.model';
+import { ColorThemeService } from '@app_core/services/ui-theme/color-theme.service';
 
 @Component({
   selector: 'app-vehicle-form',
@@ -20,67 +20,20 @@ import { VehiclesService } from '@app_services/vehicles/vehicles.service';
     IonicModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
     CoreModule,
+    ReactiveFormsModule,
     TranslateModule,
   ]
 })
-export class VehicleFormComponent  implements OnInit {
-  public brands: string[] = []
+export class VehicleFormComponent  implements OnInit, OnDestroy {
+  @Input() public vehicle?: Vehicle;
+  public mode: 'create'| 'activate' | 'edit' = 'create';
+  public brands: string[] = [];
   public vehiclesTypes = ['Carro', 'Moto']
-  public brandVehicles = [
-    "Chevrolet",
-      "Renault",
-      "Toyota",
-      "Nissan",
-      "Mazda",
-      "Kia",
-      "Honda",
-      "Hyundai",
-      "Ford",
-      "Volkswagen",
-      "BMW",
-      "Mercedes-Benz",
-      "Audi",
-      "Jeep",
-      "Fiat",
-      "Peugeot",
-      "Chery",
-      "Mitsubishi",
-      "Subaru",
-      "Suzuki",
-      "Land Rover",
-      "Porsche",
-      "Volvo",
-      "Audi",
-      "Lexus",
-      "Acura",
-      "Great Wall",
-      "Jac Motors",
-      "BYD",
-      "Geely"
-  ];
+  public brandVehicles = VEHICLE_BRANDS;
+  public brandsMotos = BIKE_BRANDS;
 
-  public brandsMotos = [
-    "AKT",
-    "Apache",
-    "Honda",
-    "Yamaha",
-    "Kawasaki",
-    "Suzuki",
-    "Bajaj",
-    "KTM",
-    "Harley-Davidson",
-    "BMW Motorrad",
-    "Ducati",
-    "Vespa",
-    "Piaggio",
-    "Royal Enfield",
-    "SYM",
-    "Auteco",
-    "Triumph",
-    "Moto Guzzi"
-  ];
+  public theme$: Observable<Theme> = this._colorThemeService.currentTheme();
 
   public vehicleForm = this._formBuilder.group({
     brand: ['', Validators.required],
@@ -90,30 +43,32 @@ export class VehicleFormComponent  implements OnInit {
     vehicleType: ['', Validators.required],
     seats: ['', [Validators.required, Validators.pattern(/(\d{1})$/)]]
   });
-  
-  public mode: 'create'| 'activate' | 'edit' = 'create';
+
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private _formBuilder: FormBuilder,
     private _vehiclesService: VehiclesService,
     private _userSessionService: UserSessionService,
+    private _colorThemeService: ColorThemeService,
     private _modalController: ModalController
   ) { }
 
   ngOnInit() {
-    this.vehicleForm.get('vehicleType')?.valueChanges.subscribe(value => {
-      this.cargarMarcas(value? value : "");
-    });
+    this.subscription.add(this.vehicleForm.get('vehicleType')?.valueChanges.subscribe(value => {
+      this.loadBrands(value ? value : "");
+    }));
 
-    this.vehicleForm.get('plates')?.valueChanges.subscribe(value => {
+    this.subscription.add(this.vehicleForm.get('plates')?.valueChanges.subscribe(_ => {
       this.validatePlate();
-    });
+    }));
+
+    if(this.vehicle) {
+      this.vehicleForm.patchValue(this.vehicle);
+    }
   }
 
-  onSubmit(){
-  }
-
-  cargarMarcas(tipo: string) {
+  loadBrands(tipo: string) {
 
     if (tipo === 'Moto') {
       this.brands = this.brandsMotos;
@@ -124,7 +79,6 @@ export class VehicleFormComponent  implements OnInit {
     }
 
     this.validatePlate();
-    this.vehicleForm.get('brand')?.setValue('');
   }
 
   onFocusoutPlate(){
@@ -163,7 +117,7 @@ export class VehicleFormComponent  implements OnInit {
           plates: this.vehicleForm.value.plates as string,
           carModel: this.vehicleForm.value.carModel as string,
           color: this.vehicleForm.value.color as string,
-          vehicleType: this.vehicleForm.value.vehicleType as string,
+          vehicleType: this.vehicleForm.value.vehicleType as VehicleType,
           seats: this.vehicleForm.value.seats as string
         };
 
@@ -177,4 +131,67 @@ export class VehicleFormComponent  implements OnInit {
 
     if (this.mode !== 'edit') this.createNewVehicle();
   }
+
+  public cancel() {
+    return this._modalController.dismiss(null, 'cancel');
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }
+
+
+const VEHICLE_BRANDS = [
+    "Chevrolet",
+      "Renault",
+      "Toyota",
+      "Nissan",
+      "Mazda",
+      "Kia",
+      "Honda",
+      "Hyundai",
+      "Ford",
+      "Volkswagen",
+      "BMW",
+      "Mercedes-Benz",
+      "Audi",
+      "Jeep",
+      "Fiat",
+      "Peugeot",
+      "Chery",
+      "Mitsubishi",
+      "Subaru",
+      "Suzuki",
+      "Land Rover",
+      "Porsche",
+      "Volvo",
+      "Audi",
+      "Lexus",
+      "Acura",
+      "Great Wall",
+      "Jac Motors",
+      "BYD",
+      "Geely"
+  ]
+
+const BIKE_BRANDS = [
+    "AKT",
+    "Apache",
+    "Honda",
+    "Yamaha",
+    "Kawasaki",
+    "Suzuki",
+    "Bajaj",
+    "KTM",
+    "Harley-Davidson",
+    "BMW Motorrad",
+    "Ducati",
+    "Vespa",
+    "Piaggio",
+    "Royal Enfield",
+    "SYM",
+    "Auteco",
+    "Triumph",
+    "Moto Guzzi"
+  ]

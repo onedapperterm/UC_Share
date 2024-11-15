@@ -10,7 +10,6 @@ import { Language, Theme } from '@app_core/settings/model/core-settings.model';
 import { ColorThemeService } from '@app_core/services/ui-theme/color-theme.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
-import { VehicleListComponent } from '@app_components/vehicle/vehicle-list/vehicle-list.component';
 
 
 @Component({
@@ -18,7 +17,7 @@ import { VehicleListComponent } from '@app_components/vehicle/vehicle-list/vehic
   templateUrl: './account.page.html',
   styleUrls: ['./account.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, TranslateModule, RouterLink, VehicleListComponent]
+  imports: [IonicModule, CommonModule, FormsModule, TranslateModule, RouterLink, ]
 })
 export class AccountPage implements OnInit {
 

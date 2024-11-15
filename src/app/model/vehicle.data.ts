@@ -1,3 +1,5 @@
+export type VehicleType = 'carro' | 'moto';
+
 export interface Vehicle {
   id: string;
   userId: string;
@@ -5,7 +7,7 @@ export interface Vehicle {
   plates: string;
   carModel: string;
   color: string;
-  vehicleType: string;
+  vehicleType: VehicleType;
   seats: string;
 }
 

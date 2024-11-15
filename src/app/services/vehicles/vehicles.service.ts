@@ -48,4 +48,8 @@ export class VehiclesService {
     });
   }
 
+  public deleteVehicle(vehicleId: string): Observable<void> {
+    return this._firestoreDataServie.deleteDocument(this._collectionName, vehicleId);
+  }
+
 }
