@@ -5,12 +5,14 @@ import { UserSessionService } from '@app_core/auth/services/user-session.service
 import { ColorThemeService } from '@app_core/services/ui-theme/color-theme.service';
 import { Theme } from '@app_core/settings/model/core-settings.model';
 import { UserTripsService } from '@app_services/user-trips/user-trips.service';
+import { VehiclesService } from '@app_services/vehicles/vehicles.service';
 import { IonicModule } from '@ionic/angular';
 import { InputCustomEvent, ModalController } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, filter, switchMap, take } from 'rxjs';
 import { UserRoute } from 'src/app/model/route.data';
 import { CreateUserTripDto, UserTrip } from 'src/app/model/trip.data';
+import { Vehicle } from 'src/app/model/vehicle.data';
 
 @Component({
   selector: 'app-trip-formular',
@@ -46,12 +48,16 @@ export class TripFormularComponent  implements OnInit {
   public now = new Date();
   public isValidTrip: WritableSignal<boolean> = signal<boolean>(false);
 
+  public vehicles$: Observable<Vehicle[]> = this._vehiclesService.getUserVehicles();
+  public currentVehicle?: Vehicle;
+
   constructor(
     private _formBuilder: FormBuilder,
     private _modalController: ModalController,
     private _userTripsService: UserTripsService,
     private _colorThemeService: ColorThemeService,
     private _userSessionService: UserSessionService,
+    private _vehiclesService: VehiclesService
   ) { }
 
   ngOnInit() {
@@ -107,6 +113,13 @@ export class TripFormularComponent  implements OnInit {
 
     if (this.mode !== 'edit') this.activeAndPublishNewTrip();
     else this.updateTrip();
+  }
+
+  public onVehicleSelected($event: any): void {
+    const selectedVehicle = $event.detail.value as Vehicle;
+    const {seats, plates} = selectedVehicle;
+    const vehicle = selectedVehicle.brand + ' - ' + selectedVehicle.carModel;
+    this.tripForm.patchValue({seats: Number.parseInt(seats), plates, vehicle})
   }
 
   private activeAndPublishNewTrip(): void {

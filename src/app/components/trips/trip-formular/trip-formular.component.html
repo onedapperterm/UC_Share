@@ -44,15 +44,6 @@
         ></ion-input>
       </ion-item>
 
-      <!-- SEATS INPUT -->
-      <ion-item lines="none">
-        <ion-input
-          formControlName="seats"
-          labelPlacement="floating"
-          [label]="'Puestos' | translate"
-          [placeholder]="'Total puestos disponibles' | translate"
-        ></ion-input>
-      </ion-item>
 
       <!-- PRICE INPUT -->
       <ion-item lines="none">
@@ -66,11 +57,27 @@
 
       <!-- VEHICLE INPUT -->
       <ion-item lines="none">
-        <ion-input
+        <ion-select
+          [label]="'Vehículo' | translate"
           formControlName="vehicle"
           labelPlacement="floating"
-          [label]="'Vehículo' | translate"
+          (ionChange)="onVehicleSelected($event)"
           [placeholder]="'Descripcion del vehículo' | translate"
+        >
+          @for(vehicle of vehicles$ | async; track vehicle.id) {
+          <ion-select-option [value]="vehicle">{{vehicle.brand + ' - ' + vehicle.carModel}}</ion-select-option>
+          }
+        </ion-select>
+      </ion-item>
+
+      <!-- SEATS INPUT -->
+      <ion-item lines="none">
+        <ion-input
+          formControlName="seats"
+          labelPlacement="floating"
+          [label]="'Puestos' | translate"
+          [placeholder]="'Total puestos disponibles' | translate"
+          [disabled]="true"
         ></ion-input>
       </ion-item>
 
@@ -81,6 +88,7 @@
           labelPlacement="floating"
           [label]="'Placas' | translate"
           [placeholder]="'Placas del vehículo' | translate"
+          [disabled]="true"
         ></ion-input>
       </ion-item>
 
