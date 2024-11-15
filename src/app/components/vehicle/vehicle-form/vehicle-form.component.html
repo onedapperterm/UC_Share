@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>{{vehicle ? 'Editar' : 'Agregar'}} vehiculo</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [color]="theme$ | async">
+  <form [formGroup]="vehicleForm" novalidate>
+    <ion-list [inset]="true">
+
+      <ion-item lines="none">
+        <ion-select [label]="'Tipo de Vehículo'"
+          label-placement="stacked"
+          fill="outline"
+          formControlName="vehicleType"
+          [placeholder]="'Carro o Moto'"
+        >
+          <ion-select-option *ngFor="let type of vehiclesTypes" [value]="type">{{ type }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-select [label]="'Marca'"
+          label-placement="stacked"
+          fill="outline"
+          formControlName="brand"
+          [placeholder]="'Seleccione Marca'"
+        >
+          <ion-select-option *ngFor="let brand of brands" [value]="brand">{{ brand }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-input [label]="'modelo'"
+          label-placement="stacked"
+          fill="outline"
+          formControlName="carModel"
+          [placeholder]="'Rio, Logan, Prado'"
+          [errorText]="vehicleForm.controls.carModel.hasError('required') &&
+          vehicleForm.controls.carModel.touched ?
+          'Campo Requerido' : ''"
+        >
+        </ion-input>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-input [label]="'Color'"
+          label-placement="stacked"
+          fill="outline"
+          formControlName="color"
+          [placeholder]="'Negro, Plateado'"
+          [errorText]="vehicleForm.controls.color.hasError('required') &&
+          vehicleForm.controls.color.touched ?
+          'Campo Requerido' : ''"
+        >
+        </ion-input>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-input [label]="'Placa'"
+          label-placement="stacked"
+          fill="outline"
+          (focusout)="onFocusoutPlate()"
+          formControlName="plates"
+          [placeholder]="'AAA000'"
+          [errorText]="vehicleForm.controls.plates.touched?
+          (vehicleForm.controls.plates.hasError('required')? 'Campo Requerido':
+          (vehicleForm.controls.plates.hasError('placaInvalida')?'Placa No Valida':''))
+          : ''"
+        >
+        </ion-input>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-input [label]="'Cupos'"
+          label-placement="stacked"
+          fill="outline"
+          formControlName="seats"
+          [placeholder]="'2'"
+          [errorText]="vehicleForm.controls.seats.hasError('required') &&
+          vehicleForm.controls.seats.touched ?
+          'Campo Requerido' : ''"
+        >
+        </ion-input>
+      </ion-item>
+
+      <ion-button expand="full" (click)="confirm()" [disabled]="!vehicleForm.valid">Registrar</ion-button>
+    </ion-list>
+  </form>
+</ion-content>

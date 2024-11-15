@@ -61,6 +61,7 @@ export class TripBookingPage implements OnInit {
     this._userTripService.bookTrip(trip, this.selectedSeats);
   }
 
+  //NOTE: just a test to see if ionic destroys the pages (it doesnt)
   ngOndestroy() {
     console.log('vemola')
   }

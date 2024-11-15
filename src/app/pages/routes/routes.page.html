@@ -5,12 +5,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">{{'components.tabs.routes' | translate}}</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
   @if (userRoutes$ | async; as routes) {
   @if (routes.length > 0) {
   <div class="routes-list page-bottom-padding">
