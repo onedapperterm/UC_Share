@@ -27,7 +27,7 @@ import { ColorThemeService } from '@app_core/services/ui-theme/color-theme.servi
 })
 export class VehicleFormComponent  implements OnInit, OnDestroy {
   @Input() public vehicle?: Vehicle;
-  public mode: 'create'| 'activate' | 'edit' = 'create';
+  public mode: 'create'| 'edit' = 'create';
   public brands: string[] = [];
   public vehiclesTypes = ['Carro', 'Moto']
   public brandVehicles = VEHICLE_BRANDS;
@@ -65,6 +65,7 @@ export class VehicleFormComponent  implements OnInit, OnDestroy {
 
     if(this.vehicle) {
       this.vehicleForm.patchValue(this.vehicle);
+      this.mode = 'edit';
     }
   }
 
@@ -126,10 +127,32 @@ export class VehicleFormComponent  implements OnInit, OnDestroy {
     ).subscribe(_ => this._modalController.dismiss(null, 'confirm'));
   }
 
+  updateVehicle(){
+    this._userSessionService.getUserId()
+    .pipe(
+      take(1),
+      filter(userId => !!userId),
+      switchMap(_ => {
+        const vehicleDto: Vehicle = {
+          ...this.vehicle as Vehicle,
+          brand: this.vehicleForm.value.brand as string,
+          plates: this.vehicleForm.value.plates as string,
+          carModel: this.vehicleForm.value.carModel as string,
+          color: this.vehicleForm.value.color as string,
+          vehicleType: this.vehicleForm.value.vehicleType as VehicleType,
+          seats: this.vehicleForm.value.seats as string
+        };
+
+        return this._vehiclesService.updateVehicle(vehicleDto)
+      })
+    ).subscribe(_ => this._modalController.dismiss(null, 'confirm'));
+  }
+
   public confirm() {
     if (!this.vehicleForm.valid) return;
 
     if (this.mode !== 'edit') this.createNewVehicle();
+    else this.updateVehicle();
   }
 
   public cancel() {

@@ -21,7 +21,7 @@ export class VehiclesPage {
 
   public deleteButtons = [
     {
-      text: 'Cancelar Viaje',
+      text: 'Eliminar Vehiculo',
       role: 'confirm',
     },
     {
