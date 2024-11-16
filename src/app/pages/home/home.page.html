@@ -17,7 +17,8 @@
 
     <app-booking-card [booking]="booking"></app-booking-card>
   </ion-list>
-  } @else if(activeTrip$ | async ) {
+  } @else if(activeTrip$ | async) {
+
   <ion-list class="ion-padding">
     <ion-list-header>
       <ion-label>
@@ -25,8 +26,55 @@
       </ion-label>
     </ion-list-header>
 
-    <!-- TODO: Continue here  as well showing the active trip card -->
+    @if(activeTrip$ | async; as activeTrip ) {
 
+    <!-- Vehicle Information -->
+    <ion-item lines="none">
+      <ion-icon name="car-outline" slot="start" color="primary"></ion-icon>
+      <ion-label>
+        <h2>{{ activeTrip.vehicle }}</h2>
+        <p>Placas: {{ activeTrip.plates }}</p>
+      </ion-label>
+    </ion-item>
+
+    <!-- Trip Details -->
+    <ion-item lines="none">
+      <ion-icon name="calendar-outline" slot="start" color="primary"></ion-icon>
+      <ion-label>
+        <h2>{{ activeTrip.date | date:'longDate' }}</h2>
+        <p>Hora: {{ activeTrip.hour }}</p>
+      </ion-label>
+    </ion-item>
+
+    <!-- Seats and Passengers -->
+    <ion-item lines="none">
+      <ion-icon name="people-outline" slot="start" color="primary"></ion-icon>
+      <ion-label>
+        <h2>{{ activeTrip.passengersIds.length }} / {{ activeTrip.seats }} pasajeros</h2>
+      </ion-label>
+      <ion-progress-bar
+        slot="end"
+        [value]="activeTrip.passengersIds.length / activeTrip.seats"
+        [color]="activeTrip.passengersIds.length === activeTrip.seats ? 'success' : 'primary'"
+        style="width: 30%;">
+      </ion-progress-bar>
+    </ion-item>
+
+    <!-- Price -->
+    <ion-item lines="none">
+      <ion-icon name="cash-outline" slot="start" color="success"></ion-icon>
+      <ion-label>
+        <h2>Precio por asiento</h2>
+        <p>${{ activeTrip.price }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-button class="ion-width-full" expand="block" routerLink="/trips">
+      <ion-icon name="cog" slot="start"></ion-icon>
+      Administrar Viaje
+    </ion-button>
+
+    }
   </ion-list>
   } @else {
   <ion-list  class="ion-padding">

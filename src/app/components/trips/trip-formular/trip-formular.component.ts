@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, WritableSignal, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserSessionService } from '@app_core/auth/services/user-session.service';
 import { ColorThemeService } from '@app_core/services/ui-theme/color-theme.service';
 import { Theme } from '@app_core/settings/model/core-settings.model';
@@ -49,7 +50,6 @@ export class TripFormularComponent  implements OnInit {
   public isValidTrip: WritableSignal<boolean> = signal<boolean>(false);
 
   public vehicles$: Observable<Vehicle[]> = this._vehiclesService.getUserVehicles();
-  public currentVehicle?: Vehicle;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -57,7 +57,8 @@ export class TripFormularComponent  implements OnInit {
     private _userTripsService: UserTripsService,
     private _colorThemeService: ColorThemeService,
     private _userSessionService: UserSessionService,
-    private _vehiclesService: VehiclesService
+    private _vehiclesService: VehiclesService,
+    private _router: Router
   ) { }
 
   ngOnInit() {
@@ -102,6 +103,10 @@ export class TripFormularComponent  implements OnInit {
     let current = this.checkpoints();
     current.splice(index, 1, value as string);
     this.checkpoints.set(current);
+  }
+
+  public toVehicles() {
+    this._modalController.dismiss().then(_ => this._router.navigateByUrl('/vehicles'))
   }
 
   public cancel() {

@@ -57,39 +57,66 @@
 
       <!-- VEHICLE INPUT -->
       <ion-item lines="none">
-        <ion-select
-          [label]="'Vehículo' | translate"
-          formControlName="vehicle"
-          labelPlacement="floating"
-          (ionChange)="onVehicleSelected($event)"
-          [placeholder]="'Descripcion del vehículo' | translate"
-        >
-          @for(vehicle of vehicles$ | async; track vehicle.id) {
-          <ion-select-option [value]="vehicle">{{vehicle.brand + ' - ' + vehicle.carModel}}</ion-select-option>
+        @if(vehicles$ | async; as vehicles) {
+          @if(vehicles.length > 0) {
+          <ion-select
+            [label]="'Vehículo' | translate"
+            formControlName="vehicle"
+            labelPlacement="floating"
+            (ionChange)="onVehicleSelected($event)"
+            [placeholder]="'Descripcion del vehículo' | translate"
+            >
+            @for(vehicle of vehicles; track vehicle.id) {
+            <ion-select-option [value]="vehicle">{{vehicle.brand + ' - ' + vehicle.carModel}}</ion-select-option>
+            }
+          </ion-select>
+          } @else {
+          <div class="ion-width-full">
+            No tienes vehiculos registrados
+          </div>
+          <ion-button
+            class="ion-text-wrap ion-padding-horizontal"
+            expand="block"
+            color="primary"
+            (click)="toVehicles()"
+            >
+            {{'Administrar Vehiculos' | translate}}
+          </ion-button>
           }
-        </ion-select>
+        }
       </ion-item>
 
       <!-- SEATS INPUT -->
       <ion-item lines="none">
         <ion-input
+          style="display: none;"
+          type="hidden"
           formControlName="seats"
           labelPlacement="floating"
           [label]="'Puestos' | translate"
           [placeholder]="'Total puestos disponibles' | translate"
           [disabled]="true"
         ></ion-input>
+        <div class="ion-width-full ion-text-center">
+          <label>Puestos: </label>
+          {{tripForm.get('seats')?.value || 0}}
+        </div>
       </ion-item>
 
       <!-- PLATES INPUT -->
       <ion-item lines="none">
         <ion-input
+          style="display: none;"
+          [disabled]="true"
           formControlName="plates"
           labelPlacement="floating"
           [label]="'Placas' | translate"
           [placeholder]="'Placas del vehículo' | translate"
-          [disabled]="true"
         ></ion-input>
+        <div class="ion-width-full ion-text-center">
+          <label>Placas: </label>
+          {{tripForm.get('plates')?.value || '---'}}
+        </div>
       </ion-item>
 
     </ion-list>
