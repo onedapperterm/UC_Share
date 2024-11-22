@@ -5,7 +5,7 @@ describe('TripBookingPage', () => {
   let component: TripBookingPage;
   let fixture: ComponentFixture<TripBookingPage>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     fixture = TestBed.createComponent(TripBookingPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
