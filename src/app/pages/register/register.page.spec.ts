@@ -18,4 +18,24 @@ describe('RegisterPage', () => {
   it('should register a new user', () => {
     expect(true).toBeTruthy();
   });
+  it('should make the form invalid when required fields are empty', () => {
+    expect(true).toBeTruthy();
+    //todo: make the rest of the test
+  });
+  it('should validate email field', () => {
+    expect(true).toBeTruthy();
+    //todo: make the rest of the test
+  });
+  it('should initialize confirmPassword validator on ngOnInit', () => {
+    expect(true).toBeTruthy();
+    //todo: make the rest of the test
+  });
+  it('should validate phoneNumber field', () => {
+    expect(true).toBeTruthy();
+    //todo: make the rest of the test
+  });
+  it('should assign "passenger" role if isDriverRole is false', () => {
+    expect(true).toBeTruthy();
+    //todo: make the rest of the test
+  });
 });

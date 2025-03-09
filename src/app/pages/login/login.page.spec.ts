@@ -37,4 +37,26 @@ describe('LoginPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should make the form invalid when fields are empty', () => {
+    expect(component).toBeTruthy();
+    //todo: make the rest of the test
+  });
+  it('should validate password field', () => {
+    expect(component).toBeTruthy();
+    //todo: make the rest of the test
+  });
+  it('should initialize the login form with default values', () => {
+    expect(component).toBeTruthy();
+    //todo: make the rest of the test
+  });
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
+    //todo: make the rest of the test
+  });
+  it('should validate email field', () => {
+    expect(component).toBeTruthy();
+    //todo: make the rest of the test
+  });
+
 });
